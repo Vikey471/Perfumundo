@@ -1,24 +1,14 @@
 from django.contrib import admin
 
-from .models import ImagenProducto, Marca, NotaOlfativa, Producto, ProductoNota
+from .models import ImagenProducto, Marca, Producto
 
 
 @admin.register(Marca)
 class MarcaAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'pais_origen')
+    list_display = ('nombre', 'categoria', 'pais_origen')
+    list_filter = ('categoria',)
     search_fields = ('nombre',)
     prepopulated_fields = {'slug': ('nombre',)}
-
-
-@admin.register(NotaOlfativa)
-class NotaOlfativaAdmin(admin.ModelAdmin):
-    search_fields = ('nombre',)
-
-
-class ProductoNotaInline(admin.TabularInline):
-    model = ProductoNota
-    extra = 3
-    autocomplete_fields = ('nota',)
 
 
 class ImagenProductoInline(admin.TabularInline):
@@ -31,6 +21,7 @@ class ProductoAdmin(admin.ModelAdmin):
     list_display = (
         'nombre',
         'marca',
+        'categoria',
         'concentracion',
         'volumen_ml',
         'genero',
@@ -41,6 +32,7 @@ class ProductoAdmin(admin.ModelAdmin):
     )
     list_editable = ('precio', 'stock', 'destacado', 'activo')
     list_filter = (
+        'marca__categoria',
         'genero',
         'concentracion',
         'marca',
@@ -54,7 +46,12 @@ class ProductoAdmin(admin.ModelAdmin):
     )
     autocomplete_fields = ('marca',)
     prepopulated_fields = {'slug': ('nombre', 'concentracion', 'volumen_ml')}
-    inlines = (ProductoNotaInline, ImagenProductoInline)
+    inlines = (ImagenProductoInline,)
+
+    @admin.display(description='Categoría', ordering='marca__categoria')
+    def categoria(self, obj):
+        return obj.marca.get_categoria_display()
+
     fieldsets = (
         (None, {
             'fields': ('nombre', 'slug', 'marca', 'descripcion', 'imagen'),

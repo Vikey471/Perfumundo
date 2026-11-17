@@ -780,18 +780,13 @@ footer p {
     color: #aaa;
 }
 
-.product-notes {
-    border-top: 1px solid #292929;
-    padding-top: 20px;
-    color: #aaa;
+.product-detail-info .product-brand a {
+    color: inherit;
+    text-decoration: none;
 }
 
-.product-notes h2 {
-    font-size: 16px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #d4af37;
-    margin-bottom: 10px;
+.product-detail-info .product-brand a:hover {
+    text-decoration: underline;
 }
 
 .product-detail-image {

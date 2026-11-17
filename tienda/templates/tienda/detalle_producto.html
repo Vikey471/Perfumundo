@@ -72,7 +72,9 @@
             <div class="product-detail-info">
 
                 <p class="product-brand">
-                    {{ producto.marca.nombre }}
+                    <a href="{% url 'catalogo' %}?categoria={{ producto.marca.categoria }}">{{ producto.marca.get_categoria_display }}</a>
+                    ·
+                    <a href="{% url 'catalogo' %}?categoria={{ producto.marca.categoria }}&marca={{ producto.marca.slug }}">{{ producto.marca.nombre }}</a>
                 </p>
 
                 <h1>
@@ -84,7 +86,7 @@
                 </p>
 
                 <p class="product-description">
-                    {{ producto.descripcion }}
+                    {{ producto.descripcion|linebreaksbr }}
                 </p>
 
                 <ul class="product-specs">
@@ -96,18 +98,6 @@
                     {% endif %}
                     <li><strong>Disponibles:</strong> {{ producto.stock }}</li>
                 </ul>
-
-                {% if notas %}
-                    <div class="product-notes">
-                        <h2>Notas olfativas</h2>
-                        {% for tipo, lista in notas.items %}
-                            <p>
-                                <strong>{{ tipo }}:</strong>
-                                {{ lista|join:", " }}
-                            </p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
 
                 {% if producto.stock > 0 %}
                     <form action="{% url 'agregar_carrito' producto.id %}" method="POST">

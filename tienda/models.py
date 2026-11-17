@@ -17,13 +17,25 @@ def _slug_unico(instancia, texto):
 
 
 class Marca(models.Model):
+    """Casa árabe, diseñador o marca nicho (subcategoría del catálogo)."""
+
+    class Categoria(models.TextChoices):
+        ARABE = 'arabe', 'Árabes'
+        DISENADOR = 'disenador', 'Diseñador'
+        NICHO = 'nicho', 'Nicho'
+
     nombre = models.CharField(max_length=100, unique=True)
+    categoria = models.CharField(
+        max_length=20,
+        choices=Categoria.choices,
+        db_index=True
+    )
     slug = models.SlugField(max_length=120, unique=True, blank=True)
     pais_origen = models.CharField(max_length=60, blank=True)
     descripcion = models.TextField(blank=True)
 
     class Meta:
-        ordering = ['nombre']
+        ordering = ['categoria', 'nombre']
         verbose_name = 'marca'
         verbose_name_plural = 'marcas'
 
@@ -34,18 +46,6 @@ class Marca(models.Model):
         if not self.slug:
             self.slug = _slug_unico(self, self.nombre)
         super().save(*args, **kwargs)
-
-
-class NotaOlfativa(models.Model):
-    nombre = models.CharField(max_length=60, unique=True)
-
-    class Meta:
-        ordering = ['nombre']
-        verbose_name = 'nota olfativa'
-        verbose_name_plural = 'notas olfativas'
-
-    def __str__(self):
-        return self.nombre
 
 
 class Producto(models.Model):
@@ -68,7 +68,9 @@ class Producto(models.Model):
         on_delete=models.PROTECT,
         related_name='productos'
     )
-    descripcion = models.TextField()
+    descripcion = models.TextField(
+        help_text='Descripción breve del perfume (acordes, notas y estilo).'
+    )
 
     concentracion = models.CharField(
         max_length=10,
@@ -87,13 +89,6 @@ class Producto(models.Model):
         validators=[MinValueValidator(0)]
     )
     stock = models.PositiveIntegerField(default=0)
-
-    notas = models.ManyToManyField(
-        NotaOlfativa,
-        through='ProductoNota',
-        related_name='productos',
-        blank=True
-    )
 
     imagen = models.ImageField(
         'imagen principal',
@@ -134,42 +129,6 @@ class Producto(models.Model):
     @property
     def disponible(self):
         return self.activo and self.stock > 0
-
-    def notas_por_tipo(self):
-        """Devuelve {'Salida': [...], 'Corazón': [...], 'Fondo': [...]}."""
-        grupos = {etiqueta: [] for _, etiqueta in ProductoNota.Tipo.choices}
-        for pn in self.producto_notas.all():
-            grupos[pn.get_tipo_display()].append(pn.nota.nombre)
-        return {k: v for k, v in grupos.items() if v}
-
-
-class ProductoNota(models.Model):
-
-    class Tipo(models.TextChoices):
-        SALIDA = 'salida', 'Salida'
-        CORAZON = 'corazon', 'Corazón'
-        FONDO = 'fondo', 'Fondo'
-
-    producto = models.ForeignKey(
-        Producto,
-        on_delete=models.CASCADE,
-        related_name='producto_notas'
-    )
-    nota = models.ForeignKey(NotaOlfativa, on_delete=models.PROTECT)
-    tipo = models.CharField(max_length=10, choices=Tipo.choices)
-
-    class Meta:
-        verbose_name = 'nota del producto'
-        verbose_name_plural = 'notas del producto'
-        constraints = [
-            models.UniqueConstraint(
-                fields=['producto', 'nota', 'tipo'],
-                name='nota_unica_por_tipo'
-            ),
-        ]
-
-    def __str__(self):
-        return f'{self.nota} ({self.get_tipo_display()})'
 
 
 class ImagenProducto(models.Model):

@@ -59,34 +59,46 @@
         </div>
 
 
-        <!-- FILTROS -->
+        <!-- CATEGORÍAS PRINCIPALES -->
     <div class="category-filters">
 
         <a href="{% url 'catalogo' %}"
-           class="{% if not genero_actual %}active{% endif %}">
+           class="{% if not categoria_actual %}active{% endif %}">
             Todos
         </a>
 
-        {% for valor, etiqueta in generos %}
-            <a href="{% url 'catalogo' %}?genero={{ valor }}"
-               class="{% if genero_actual == valor %}active{% endif %}">
+        {% for valor, etiqueta in categorias %}
+            <a href="{% url 'catalogo' %}?categoria={{ valor }}"
+               class="{% if categoria_actual == valor %}active{% endif %}">
                 {{ etiqueta }}
             </a>
         {% endfor %}
 
     </div>
 
+    <!-- SUBCATEGORÍAS (CASAS / DISEÑADORES / MARCAS) Y OTROS FILTROS -->
     <form method="GET" action="{% url 'catalogo' %}" class="catalog-filter-form">
 
-        {% if genero_actual %}
-            <input type="hidden" name="genero" value="{{ genero_actual }}">
+        {% if categoria_actual %}
+            <input type="hidden" name="categoria" value="{{ categoria_actual }}">
         {% endif %}
 
         <select name="marca" onchange="this.form.submit()">
-            <option value="">Todas las marcas</option>
+            <option value="">
+                {% if categoria_actual == 'arabe' %}Todas las casas árabes{% elif categoria_actual == 'disenador' %}Todos los diseñadores{% elif categoria_actual == 'nicho' %}Todas las marcas nicho{% else %}Todas las marcas{% endif %}
+            </option>
             {% for marca in marcas %}
                 <option value="{{ marca.slug }}" {% if marca_actual == marca.slug %}selected{% endif %}>
                     {{ marca.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="genero" onchange="this.form.submit()">
+            <option value="">Todos los géneros</option>
+            {% for valor, etiqueta in generos %}
+                <option value="{{ valor }}" {% if genero_actual == valor %}selected{% endif %}>
+                    {{ etiqueta }}
                 </option>
             {% endfor %}
         </select>

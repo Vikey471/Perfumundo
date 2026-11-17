@@ -20,19 +20,27 @@ def inicio(request):
 
 
 def catalogo(request):
-    genero = request.GET.get('genero') or None
+    categoria = request.GET.get('categoria') or None
     marca = request.GET.get('marca') or None
+    genero = request.GET.get('genero') or None
     concentracion = request.GET.get('concentracion') or None
 
     productos = Producto.objects.filter(activo=True).select_related('marca')
+    marcas = Marca.objects.filter(productos__activo=True).distinct()
+
+    if categoria in Marca.Categoria.values:
+        productos = productos.filter(marca__categoria=categoria)
+        marcas = marcas.filter(categoria=categoria)
+    else:
+        categoria = None
+
+    if marca:
+        productos = productos.filter(marca__slug=marca)
 
     if genero in Producto.Genero.values:
         productos = productos.filter(genero=genero)
     else:
         genero = None
-
-    if marca:
-        productos = productos.filter(marca__slug=marca)
 
     if concentracion in Producto.Concentracion.values:
         productos = productos.filter(concentracion=concentracion)
@@ -41,11 +49,13 @@ def catalogo(request):
 
     return render(request, 'tienda/catalogo.html', {
         'productos': productos,
-        'genero_actual': genero,
+        'categoria_actual': categoria,
         'marca_actual': marca,
+        'genero_actual': genero,
         'concentracion_actual': concentracion,
+        'categorias': Marca.Categoria.choices,
+        'marcas': marcas,
         'generos': Producto.Genero.choices,
-        'marcas': Marca.objects.filter(productos__activo=True).distinct(),
         'concentraciones': Producto.Concentracion.choices,
     })
 
@@ -54,14 +64,13 @@ def detalle_producto(request, slug):
     producto = get_object_or_404(
         Producto.objects
         .select_related('marca')
-        .prefetch_related('producto_notas__nota', 'imagenes'),
+        .prefetch_related('imagenes'),
         slug=slug,
         activo=True,
     )
 
     return render(request, 'tienda/detalle_producto.html', {
         'producto': producto,
-        'notas': producto.notas_por_tipo(),
     })
 
 
