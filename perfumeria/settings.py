@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tienda',
     'cuentas',
+    'pedidos',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +151,6 @@ MAILERS = {
 LOGIN_URL = 'entrar'
 LOGIN_REDIRECT_URL = 'mi_cuenta'
 LOGOUT_REDIRECT_URL = 'inicio'
+
+# Precio para clientes mayoristas aprobados (% de descuento sobre precio de lista)
+DESCUENTO_MAYORISTA = os.environ.get('DESCUENTO_MAYORISTA', '15')

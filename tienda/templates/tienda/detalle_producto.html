@@ -1,4 +1,5 @@
 {% extends "tienda/base.html" %}
+{% load precios %}
 
 {% block title %}{{ producto.nombre }} | Perfumundo{% endblock %}
 
@@ -47,9 +48,7 @@
                     {{ producto.nombre }}
                 </h1>
 
-                <p class="product-detail-price">
-                    ${{ producto.precio }} MXN
-                </p>
+                {% precio_producto producto "product-detail-price" %}
 
                 <p class="product-description">
                     {{ producto.descripcion|linebreaksbr }}

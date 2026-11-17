@@ -54,7 +54,11 @@
                     </h3>
 
                     <p>
-                        Precio: ${{ item.producto.precio }} MXN
+                        Precio:
+                        {% if item.precio_unitario != item.precio_lista %}
+                            <span class="price-old">${{ item.precio_lista }}</span>
+                        {% endif %}
+                        ${{ item.precio_unitario }} MXN
                     </p>
 
 
@@ -137,13 +141,27 @@
 
             <div class="cart-total">
 
+                {% if totales.descuento %}
+                    <p class="cart-total-line">
+                        Subtotal <span>${{ totales.subtotal }} MXN</span>
+                    </p>
+                    <p class="cart-total-line cart-discount">
+                        Descuento mayorista ({{ descuento_cliente|floatformat:"0" }}%)
+                        <span>−${{ totales.descuento }} MXN</span>
+                    </p>
+                {% endif %}
+
                 <p>
                     Total
                 </p>
 
                 <h3>
-                    ${{ total }} MXN
+                    ${{ totales.total }} MXN
                 </h3>
+
+                <a href="{% url 'checkout' %}" class="add-cart-button checkout-button">
+                    Finalizar compra
+                </a>
 
             </div>
 

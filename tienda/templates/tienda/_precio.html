@@ -1,0 +1,9 @@
+<p class="{{ clase }}">
+    {% if porcentaje %}
+        <span class="price-old">${{ precio_lista }}</span>
+        ${{ precio_final }} MXN
+        <span class="price-tag">Mayorista -{{ porcentaje|floatformat:"0" }}%</span>
+    {% else %}
+        ${{ precio_lista }} MXN
+    {% endif %}
+</p>

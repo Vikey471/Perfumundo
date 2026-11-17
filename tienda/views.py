@@ -1,10 +1,9 @@
-from decimal import Decimal
-
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from .carrito import Carrito
 from .models import Marca, Producto
 
 
@@ -88,30 +87,12 @@ def _guardar_carrito(request, carrito):
 
 
 def carrito(request):
-    carrito = request.session.get('carrito', {})
-
-    productos = Producto.objects.filter(
-        id__in=carrito.keys(),
-        activo=True
-    ).select_related('marca')
-
-    productos_carrito = []
-    total = Decimal('0')
-
-    for producto in productos:
-        cantidad = carrito.get(str(producto.id), 0)
-        subtotal = producto.precio * cantidad
-        total += subtotal
-
-        productos_carrito.append({
-            'producto': producto,
-            'cantidad': cantidad,
-            'subtotal': subtotal,
-        })
+    carro = Carrito(request)
+    lineas = carro.lineas()
 
     return render(request, 'tienda/carrito.html', {
-        'productos_carrito': productos_carrito,
-        'total': total
+        'productos_carrito': lineas,
+        'totales': Carrito.totales(lineas),
     })
 
 

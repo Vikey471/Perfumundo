@@ -21,6 +21,7 @@
             {% endif %}
         </p>
         <p><strong>Correo:</strong> {{ user.email }}</p>
+        <p><a href="{% url 'mis_pedidos' %}" class="account-switch-link">Ver mis pedidos →</a></p>
     </div>
 
     <form method="POST" class="account-form" novalidate>

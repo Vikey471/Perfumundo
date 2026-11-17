@@ -1,4 +1,5 @@
 {% extends "tienda/base.html" %}
+{% load precios %}
 
 {% block title %}Catálogo | Perfumundo{% endblock %}
 
@@ -138,9 +139,7 @@
                     {{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml
                 </p>
 
-                <p class="product-price">
-                    ${{ producto.precio }} MXN
-                </p>
+                {% precio_producto producto %}
 
             </a>
 

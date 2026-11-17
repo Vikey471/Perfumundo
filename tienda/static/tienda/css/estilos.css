@@ -1084,3 +1084,191 @@ footer p {
 .wholesale-fields[hidden] {
     display: none;
 }
+
+/* =========================
+   PRECIO MAYORISTA
+========================= */
+
+.price-old {
+    color: #777;
+    text-decoration: line-through;
+    font-size: 0.85em;
+    margin-right: 6px;
+}
+
+.price-tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    background: #d4af37;
+    color: #111;
+    font-size: 11px;
+    letter-spacing: 1px;
+    vertical-align: middle;
+}
+
+.cart-total-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: #aaa;
+}
+
+.cart-discount {
+    color: #d4af37;
+}
+
+.checkout-button {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+}
+
+/* =========================
+   CHECKOUT Y PEDIDOS
+========================= */
+
+.checkout-page {
+    max-width: 1100px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.account-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    background: #181818;
+    border: 1px solid #333;
+    color: #f4f0e8;
+    font: inherit;
+}
+
+.checkbox-line {
+    display: flex !important;
+    gap: 8px;
+    align-items: center;
+}
+
+.checkout-note {
+    color: #777;
+    font-size: 13px;
+}
+
+.order-summary {
+    padding: 22px;
+    border: 1px solid #292929;
+    background: #141414;
+    color: #bdbdbd;
+    margin-bottom: 25px;
+}
+
+.order-summary h3 {
+    margin-top: 0;
+    color: #d4af37;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.order-summary-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #222;
+}
+
+.order-summary-line small {
+    display: block;
+    color: #777;
+    font-size: 12px;
+}
+
+.order-summary-line.muted {
+    color: #888;
+}
+
+.order-summary-total {
+    border-bottom: none;
+    font-size: 18px;
+    color: #f4f0e8;
+    font-weight: bold;
+}
+
+.order-card {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 20px;
+    align-items: center;
+    padding: 18px;
+    margin-bottom: 12px;
+    border: 1px solid #292929;
+    background: #141414;
+    color: #ddd;
+    text-decoration: none;
+}
+
+.order-card:hover {
+    border-color: #d4af37;
+}
+
+.order-card small {
+    display: block;
+    color: #777;
+    font-size: 12px;
+}
+
+.order-card-total {
+    text-align: right;
+}
+
+.order-status {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 12px;
+    border: 1px solid #555;
+    color: #bbb;
+}
+
+.order-status-pagado,
+.order-status-enviado {
+    border-color: #d4af37;
+    color: #d4af37;
+}
+
+.order-status-entregado {
+    background: #d4af37;
+    border-color: #d4af37;
+    color: #111;
+}
+
+.order-status-cancelado {
+    border-color: #c0392b;
+    color: #e57368;
+}
+
+.account-switch-link {
+    color: #d4af37;
+}
+
+@media (max-width: 900px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .order-card {
+        grid-template-columns: 1fr;
+    }
+
+    .order-card-total {
+        text-align: left;
+    }
+}
