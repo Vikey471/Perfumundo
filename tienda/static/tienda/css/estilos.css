@@ -896,3 +896,191 @@ footer p {
         width: 110px;
     }
 }
+
+/* =========================
+   CUENTAS DE CLIENTE
+========================= */
+
+.account-link {
+    color: #bdbdbd;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.account-link:hover {
+    color: #d4af37;
+}
+
+.account-page {
+    max-width: 640px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+.account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.account-form h3 {
+    margin-top: 15px;
+    color: #d4af37;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.account-form label {
+    display: block;
+    color: #bdbdbd;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.account-form input[type="text"],
+.account-form input[type="email"],
+.account-form input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    background: #181818;
+    border: 1px solid #333;
+    color: #f4f0e8;
+    font-size: 15px;
+}
+
+.account-form input:focus {
+    border-color: #d4af37;
+    outline: none;
+}
+
+.account-form .helptext,
+.account-form [id$="_helptext"] {
+    color: #777;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.account-form .helptext ul,
+.account-form [id$="_helptext"] ul {
+    margin: 4px 0 0;
+    padding-left: 18px;
+}
+
+.account-form .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 6px;
+    color: #e57368;
+    font-size: 13px;
+}
+
+.form-errors {
+    padding: 12px 18px;
+    border-left: 3px solid #c0392b;
+    background: rgba(192, 57, 43, 0.1);
+    color: #f4f0e8;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.customer-type {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.customer-type legend {
+    color: #bdbdbd;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.customer-type-option {
+    display: flex !important;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 14px;
+    border: 1px solid #333;
+    background: #181818;
+    cursor: pointer;
+}
+
+.customer-type-option:has(input:checked) {
+    border-color: #d4af37;
+}
+
+.customer-type-option strong {
+    display: block;
+    color: #f4f0e8;
+    margin-bottom: 4px;
+}
+
+.customer-type-option small {
+    color: #888;
+    font-size: 12px;
+}
+
+.account-switch {
+    color: #888;
+    font-size: 14px;
+}
+
+.account-switch a {
+    color: #d4af37;
+}
+
+.account-status {
+    padding: 18px;
+    border: 1px solid #292929;
+    background: #141414;
+    color: #bdbdbd;
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 10px;
+    font-size: 12px;
+}
+
+.badge-ok {
+    background: #d4af37;
+    color: #111;
+}
+
+.badge-pending {
+    border: 1px solid #d4af37;
+    color: #d4af37;
+}
+
+.logout-form {
+    margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+    .form-row,
+    .customer-type {
+        grid-template-columns: 1fr;
+    }
+}
+
+.wholesale-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.wholesale-fields[hidden] {
+    display: none;
+}

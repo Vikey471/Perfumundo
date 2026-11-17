@@ -1,0 +1,61 @@
+{% extends "tienda/base.html" %}
+
+{% block title %}Mi cuenta | Perfumundo{% endblock %}
+
+{% block content %}
+
+<section class="account-page">
+
+    <div class="section-heading">
+        <p>PERFUMUNDO</p>
+        <h2>Hola, {{ user.first_name|default:user.username }}</h2>
+    </div>
+
+    <div class="account-status">
+        <p>
+            <strong>Tipo de cuenta:</strong> {{ perfil.get_tipo_display }}
+            {% if perfil.es_mayorista %}
+                <span class="badge badge-ok">Aprobado</span>
+            {% elif perfil.mayorista_pendiente %}
+                <span class="badge badge-pending">En revisión</span>
+            {% endif %}
+        </p>
+        <p><strong>Correo:</strong> {{ user.email }}</p>
+    </div>
+
+    <form method="POST" class="account-form" novalidate>
+        {% csrf_token %}
+
+        <h3>Datos personales</h3>
+        <div class="form-row">
+            <div class="field">{{ usuario_form.first_name.as_field_group }}</div>
+            <div class="field">{{ usuario_form.last_name.as_field_group }}</div>
+        </div>
+        <div class="field">{{ perfil_form.telefono.as_field_group }}</div>
+
+        {% if perfil_form.empresa %}
+            <h3>Datos de mayorista</h3>
+            <div class="field">{{ perfil_form.empresa.as_field_group }}</div>
+            <div class="field">{{ perfil_form.rfc.as_field_group }}</div>
+        {% endif %}
+
+        <h3>Dirección de envío</h3>
+        <div class="field">{{ perfil_form.calle.as_field_group }}</div>
+        <div class="field">{{ perfil_form.colonia.as_field_group }}</div>
+        <div class="form-row">
+            <div class="field">{{ perfil_form.ciudad.as_field_group }}</div>
+            <div class="field">{{ perfil_form.estado.as_field_group }}</div>
+        </div>
+        <div class="field">{{ perfil_form.codigo_postal.as_field_group }}</div>
+
+        <button type="submit" class="add-cart-button">Guardar cambios</button>
+    </form>
+
+    <form method="POST" action="{% url 'salir' %}" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="remove-cart-button">Cerrar sesión</button>
+    </form>
+
+</section>
+
+{% endblock %}

@@ -48,6 +48,12 @@
                 <button type="submit" class="search-btn" aria-label="Buscar">⌕</button>
             </form>
 
+            {% if user.is_authenticated %}
+                <a href="{% url 'mi_cuenta' %}" class="account-link">Mi cuenta</a>
+            {% else %}
+                <a href="{% url 'entrar' %}" class="account-link">Entrar</a>
+            {% endif %}
+
             <a href="{% url 'carrito' %}" class="cart-btn" aria-label="Carrito">
                 🛒
                 {% if carrito_cantidad %}
