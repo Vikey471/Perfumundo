@@ -55,13 +55,24 @@
 
                 {% endif %}
 
+                {% if producto.imagenes.all %}
+                    <div class="product-gallery">
+                        {% for foto in producto.imagenes.all %}
+                            <img
+                                src="{{ foto.imagen.url }}"
+                                alt="{{ foto.texto_alternativo|default:producto.nombre }}"
+                            >
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
             </div>
 
 
             <div class="product-detail-info">
 
                 <p class="product-brand">
-                    {{ producto.marca }}
+                    {{ producto.marca.nombre }}
                 </p>
 
                 <h1>
@@ -76,15 +87,27 @@
                     {{ producto.descripcion }}
                 </p>
 
-                <p>
-                    <strong>Categoría:</strong>
-                    {{ producto.categoria }}
-                </p>
+                <ul class="product-specs">
+                    <li><strong>Concentración:</strong> {{ producto.get_concentracion_display }}</li>
+                    <li><strong>Contenido:</strong> {{ producto.volumen_ml }} ml</li>
+                    <li><strong>Género:</strong> {{ producto.get_genero_display }}</li>
+                    {% if producto.marca.pais_origen %}
+                        <li><strong>Origen:</strong> {{ producto.marca.pais_origen }}</li>
+                    {% endif %}
+                    <li><strong>Disponibles:</strong> {{ producto.stock }}</li>
+                </ul>
 
-                <p>
-                    <strong>Disponibles:</strong>
-                    {{ producto.stock }}
-                </p>
+                {% if notas %}
+                    <div class="product-notes">
+                        <h2>Notas olfativas</h2>
+                        {% for tipo, lista in notas.items %}
+                            <p>
+                                <strong>{{ tipo }}:</strong>
+                                {{ lista|join:", " }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
                 {% if producto.stock > 0 %}
                     <form action="{% url 'agregar_carrito' producto.id %}" method="POST">

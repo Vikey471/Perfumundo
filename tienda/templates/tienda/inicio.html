@@ -106,7 +106,7 @@
 
         <div class="category-grid">
 
-            <a href="{% url 'catalogo' %}?categoria=Hombre" class="category-card">
+            <a href="{% url 'catalogo' %}?genero=Hombre" class="category-card">
 
                 <span>01</span>
 
@@ -121,7 +121,7 @@
             </a>
 
 
-            <a href="{% url 'catalogo' %}?categoria=Mujer" class="category-card">
+            <a href="{% url 'catalogo' %}?genero=Mujer" class="category-card">
 
                 <span>02</span>
 
@@ -136,7 +136,7 @@
             </a>
 
 
-            <a href="{% url 'catalogo' %}?categoria=Unisex" class="category-card">
+            <a href="{% url 'catalogo' %}?genero=Unisex" class="category-card">
 
                 <span>03</span>
 
@@ -177,7 +177,7 @@
 
     <article class="product-card">
 
-        <a href="{% url 'detalle_producto' producto.id %}" class="product-link">
+        <a href="{{ producto.get_absolute_url }}" class="product-link">
 
     <div class="product-image">
 
@@ -196,7 +196,7 @@
 
         <div class="product-info">
 
-            <a href="{% url 'detalle_producto' producto.id %}" class="product-link">
+            <a href="{{ producto.get_absolute_url }}" class="product-link">
 
                 <p class="product-brand">
                     {{ producto.marca }}
@@ -205,6 +205,10 @@
                 <h3>
                     {{ producto.nombre }}
                 </h3>
+
+                <p class="product-meta">
+                    {{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml
+                </p>
 
                 <p class="product-price">
                     ${{ producto.precio }} MXN

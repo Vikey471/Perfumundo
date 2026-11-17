@@ -742,3 +742,73 @@ footer p {
     border-left-color: #c0392b;
     background: rgba(192, 57, 43, 0.1);
 }
+
+/* =========================
+   FICHA DEL PERFUME
+========================= */
+
+.product-meta {
+    color: #888;
+    font-size: 13px;
+    margin: 4px 0 8px;
+}
+
+.catalog-filter-form {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: -30px 0 40px;
+}
+
+.catalog-filter-form select {
+    padding: 10px 15px;
+    background: #181818;
+    border: 1px solid #333;
+    color: #ddd;
+    font-size: 14px;
+}
+
+.catalog-empty {
+    color: #888;
+}
+
+.product-specs {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px;
+    line-height: 2;
+    color: #aaa;
+}
+
+.product-notes {
+    border-top: 1px solid #292929;
+    padding-top: 20px;
+    color: #aaa;
+}
+
+.product-notes h2 {
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+.product-detail-image {
+    flex-direction: column;
+}
+
+.product-detail-image .product-gallery {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product-detail-image .product-gallery img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid #333;
+}

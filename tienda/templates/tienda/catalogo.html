@@ -59,30 +59,50 @@
         </div>
 
 
-        <!-- FILTROS DE CATEGORÍA -->
+        <!-- FILTROS -->
     <div class="category-filters">
 
-    <a href="{% url 'catalogo' %}"
-       class="{% if not categoria_actual %}active{% endif %}">
-        Todos
-    </a>
+        <a href="{% url 'catalogo' %}"
+           class="{% if not genero_actual %}active{% endif %}">
+            Todos
+        </a>
 
-    <a href="{% url 'catalogo' %}?categoria=Hombre"
-       class="{% if categoria_actual == 'Hombre' %}active{% endif %}">
-        Hombre
-    </a>
+        {% for valor, etiqueta in generos %}
+            <a href="{% url 'catalogo' %}?genero={{ valor }}"
+               class="{% if genero_actual == valor %}active{% endif %}">
+                {{ etiqueta }}
+            </a>
+        {% endfor %}
 
-    <a href="{% url 'catalogo' %}?categoria=Mujer"
-       class="{% if categoria_actual == 'Mujer' %}active{% endif %}">
-        Mujer
-    </a>
+    </div>
 
-    <a href="{% url 'catalogo' %}?categoria=Unisex"
-       class="{% if categoria_actual == 'Unisex' %}active{% endif %}">
-        Unisex
-    </a>
+    <form method="GET" action="{% url 'catalogo' %}" class="catalog-filter-form">
 
-</div>
+        {% if genero_actual %}
+            <input type="hidden" name="genero" value="{{ genero_actual }}">
+        {% endif %}
+
+        <select name="marca" onchange="this.form.submit()">
+            <option value="">Todas las marcas</option>
+            {% for marca in marcas %}
+                <option value="{{ marca.slug }}" {% if marca_actual == marca.slug %}selected{% endif %}>
+                    {{ marca.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="concentracion" onchange="this.form.submit()">
+            <option value="">Todas las concentraciones</option>
+            {% for valor, etiqueta in concentraciones %}
+                <option value="{{ valor }}" {% if concentracion_actual == valor %}selected{% endif %}>
+                    {{ etiqueta }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <noscript><button type="submit">Filtrar</button></noscript>
+
+    </form>
 
 <div class="products-grid">
 
@@ -92,7 +112,7 @@
 
     <article class="product-card">
 
-        <a href="{% url 'detalle_producto' producto.id %}" class="product-link">
+        <a href="{{ producto.get_absolute_url }}" class="product-link">
 
             <div class="product-image">
 
@@ -111,7 +131,7 @@
 
         <div class="product-info">
 
-            <a href="{% url 'detalle_producto' producto.id %}" class="product-link">
+            <a href="{{ producto.get_absolute_url }}" class="product-link">
 
                 <p class="product-brand">
                     {{ producto.marca }}
@@ -120,6 +140,10 @@
                 <h3>
                     {{ producto.nombre }}
                 </h3>
+
+                <p class="product-meta">
+                    {{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml
+                </p>
 
                 <p class="product-price">
                     ${{ producto.precio }} MXN
@@ -140,6 +164,10 @@
         </div>
 
     </article>
+
+{% empty %}
+
+    <p class="catalog-empty">No encontramos perfumes con esos filtros.</p>
 
 {% endfor %}
 

@@ -7,7 +7,7 @@ urlpatterns = [
 
     path('catalogo/', views.catalogo, name='catalogo'),
 
-    path('producto/<int:id>/', views.detalle_producto, name='detalle_producto'),
+    path('producto/<slug:slug>/', views.detalle_producto, name='detalle_producto'),
 
     path('carrito/', views.carrito, name='carrito'),
 

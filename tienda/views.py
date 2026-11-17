@@ -4,13 +4,14 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from .models import Producto
+from .models import Marca, Producto
 
 
 def inicio(request):
-    productos = Producto.objects.filter(
-        activo=True,
-        destacado=True
+    productos = (
+        Producto.objects
+        .filter(activo=True, destacado=True)
+        .select_related('marca')
     )
 
     return render(request, 'tienda/inicio.html', {
@@ -19,24 +20,48 @@ def inicio(request):
 
 
 def catalogo(request):
-    categoria = request.GET.get('categoria')
+    genero = request.GET.get('genero') or None
+    marca = request.GET.get('marca') or None
+    concentracion = request.GET.get('concentracion') or None
 
-    productos = Producto.objects.filter(activo=True)
+    productos = Producto.objects.filter(activo=True).select_related('marca')
 
-    if categoria:
-        productos = productos.filter(categoria=categoria)
+    if genero in Producto.Genero.values:
+        productos = productos.filter(genero=genero)
+    else:
+        genero = None
+
+    if marca:
+        productos = productos.filter(marca__slug=marca)
+
+    if concentracion in Producto.Concentracion.values:
+        productos = productos.filter(concentracion=concentracion)
+    else:
+        concentracion = None
 
     return render(request, 'tienda/catalogo.html', {
         'productos': productos,
-        'categoria_actual': categoria
+        'genero_actual': genero,
+        'marca_actual': marca,
+        'concentracion_actual': concentracion,
+        'generos': Producto.Genero.choices,
+        'marcas': Marca.objects.filter(productos__activo=True).distinct(),
+        'concentraciones': Producto.Concentracion.choices,
     })
 
 
-def detalle_producto(request, id):
-    producto = get_object_or_404(Producto, id=id, activo=True)
+def detalle_producto(request, slug):
+    producto = get_object_or_404(
+        Producto.objects
+        .select_related('marca')
+        .prefetch_related('producto_notas__nota', 'imagenes'),
+        slug=slug,
+        activo=True,
+    )
 
     return render(request, 'tienda/detalle_producto.html', {
-        'producto': producto
+        'producto': producto,
+        'notas': producto.notas_por_tipo(),
     })
 
 
@@ -51,7 +76,7 @@ def carrito(request):
     productos = Producto.objects.filter(
         id__in=carrito.keys(),
         activo=True
-    )
+    ).select_related('marca')
 
     productos_carrito = []
     total = Decimal('0')
