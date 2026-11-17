@@ -72,6 +72,13 @@ class Producto(models.Model):
         help_text='Descripción breve del perfume (acordes, notas y estilo).'
     )
 
+    url_fragrantica = models.URLField(
+        'enlace a Fragrantica',
+        max_length=300,
+        blank=True,
+        help_text='Opcional. Ficha del perfume en fragrantica.es usada como referencia.'
+    )
+
     concentracion = models.CharField(
         max_length=10,
         choices=Concentracion.choices,

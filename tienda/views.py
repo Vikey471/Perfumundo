@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -24,6 +25,7 @@ def catalogo(request):
     marca = request.GET.get('marca') or None
     genero = request.GET.get('genero') or None
     concentracion = request.GET.get('concentracion') or None
+    busqueda = (request.GET.get('q') or '').strip()
 
     productos = Producto.objects.filter(activo=True).select_related('marca')
     marcas = Marca.objects.filter(productos__activo=True).distinct()
@@ -47,8 +49,14 @@ def catalogo(request):
     else:
         concentracion = None
 
+    if busqueda:
+        productos = productos.filter(
+            Q(nombre__icontains=busqueda) | Q(marca__nombre__icontains=busqueda)
+        )
+
     return render(request, 'tienda/catalogo.html', {
         'productos': productos,
+        'busqueda': busqueda,
         'categoria_actual': categoria,
         'marca_actual': marca,
         'genero_actual': genero,

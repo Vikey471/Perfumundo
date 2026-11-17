@@ -807,3 +807,92 @@ footer p {
     object-fit: cover;
     border: 1px solid #333;
 }
+
+/* =========================
+   MENÚ: ACTIVO, BUSCADOR Y CONTADOR
+========================= */
+
+.navbar nav a.active {
+    color: #d4af37;
+}
+
+.nav-actions {
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.search-form input {
+    width: 170px;
+    background: transparent;
+    border: none;
+    color: #ddd;
+    font-size: 13px;
+    padding: 6px 4px;
+    outline: none;
+}
+
+.search-form:focus-within {
+    border-bottom-color: #d4af37;
+}
+
+.cart-btn {
+    position: relative;
+    font-size: 22px;
+}
+
+.cart-count {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background: #d4af37;
+    color: #111;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 18px;
+    text-align: center;
+}
+
+.site-messages {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 0 7%;
+}
+
+.gender-filters {
+    margin-top: -30px;
+}
+
+.gender-filters a {
+    padding: 8px 18px;
+    font-size: 13px;
+}
+
+.catalog-search-info {
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.catalog-search-info a,
+.product-reference a {
+    color: #d4af37;
+}
+
+.product-reference {
+    margin: -15px 0 25px;
+    font-size: 14px;
+}
+
+@media (max-width: 900px) {
+    .search-form input {
+        width: 110px;
+    }
+}

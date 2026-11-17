@@ -54,7 +54,7 @@ class ProductoAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('nombre', 'slug', 'marca', 'descripcion', 'imagen'),
+            'fields': ('nombre', 'slug', 'marca', 'descripcion', 'url_fragrantica', 'imagen'),
         }),
         ('Ficha del perfume', {
             'fields': ('concentracion', 'genero', 'volumen_ml'),
