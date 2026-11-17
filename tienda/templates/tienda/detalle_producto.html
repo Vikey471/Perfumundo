@@ -30,7 +30,7 @@
 
         <div class="nav-actions">
             <button class="search-btn">⌕</button>
-            <button class="cart-btn">🛒</button>
+            <a href="{% url 'carrito' %}" class="cart-btn">🛒</a>
         </div>
 
     </header>
@@ -86,9 +86,18 @@
                     {{ producto.stock }}
                 </p>
 
-                <button class="add-cart-button">
-                    Agregar al carrito
-                </button>
+                {% if producto.stock > 0 %}
+                    <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="add-cart-button">
+                            Agregar al carrito
+                        </button>
+                    </form>
+                {% else %}
+                    <button class="add-cart-button" disabled>
+                        Agotado
+                    </button>
+                {% endif %}
 
             </div>
 

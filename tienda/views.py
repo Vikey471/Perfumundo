@@ -1,5 +1,9 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from decimal import Decimal
+
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
 from .models import Producto
 
 
@@ -29,11 +33,16 @@ def catalogo(request):
 
 
 def detalle_producto(request, id):
-    producto = Producto.objects.get(id=id)
+    producto = get_object_or_404(Producto, id=id, activo=True)
 
     return render(request, 'tienda/detalle_producto.html', {
         'producto': producto
     })
+
+
+def _guardar_carrito(request, carrito):
+    request.session['carrito'] = carrito
+    request.session.modified = True
 
 
 def carrito(request):
@@ -45,15 +54,11 @@ def carrito(request):
     )
 
     productos_carrito = []
-
-    total = 0
+    total = Decimal('0')
 
     for producto in productos:
-
         cantidad = carrito.get(str(producto.id), 0)
-
         subtotal = producto.precio * cantidad
-
         total += subtotal
 
         productos_carrito.append({
@@ -68,37 +73,54 @@ def carrito(request):
     })
 
 
+@require_POST
 def agregar_carrito(request, id):
+    producto = get_object_or_404(Producto, id=id, activo=True)
     carrito = request.session.get('carrito', {})
+    clave = str(producto.id)
 
-    id = str(id)
+    cantidad_actual = carrito.get(clave, 0)
 
-    if id in carrito:
-        carrito[id] += 1
+    if cantidad_actual + 1 > producto.stock:
+        messages.warning(
+            request,
+            f'No hay más piezas disponibles de {producto.nombre}.'
+        )
     else:
-        carrito[id] = 1
-
-    request.session['carrito'] = carrito
-    request.session.modified = True
+        carrito[clave] = cantidad_actual + 1
+        _guardar_carrito(request, carrito)
+        messages.success(request, f'{producto.nombre} se agregó al carrito.')
 
     return redirect('carrito')
 
+
+@require_POST
 def actualizar_carrito(request, id):
-
     carrito = request.session.get('carrito', {})
+    clave = str(id)
 
-    id = str(id)
-
-    if request.method == 'POST':
-
+    try:
         cantidad = int(request.POST.get('cantidad', 1))
+    except (TypeError, ValueError):
+        messages.error(request, 'La cantidad no es válida.')
+        return redirect('carrito')
 
-        if cantidad > 0:
-            carrito[id] = cantidad
-        else:
-            carrito.pop(id, None)
+    producto = Producto.objects.filter(id=id, activo=True).first()
 
-    request.session['carrito'] = carrito
-    request.session.modified = True
+    if cantidad <= 0 or producto is None:
+        carrito.pop(clave, None)
+    elif cantidad > producto.stock:
+        carrito[clave] = producto.stock
+        messages.warning(
+            request,
+            f'Solo quedan {producto.stock} disponibles de {producto.nombre}.'
+        )
+    else:
+        carrito[clave] = cantidad
+
+    if carrito.get(clave) == 0:
+        carrito.pop(clave, None)
+
+    _guardar_carrito(request, carrito)
 
     return redirect('carrito')

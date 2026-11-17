@@ -71,6 +71,15 @@
     </div>
 
 
+    {% if messages %}
+        <div class="cart-messages">
+            {% for message in messages %}
+                <p class="cart-message cart-message-{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
     {% if productos_carrito %}
 
         {% for item in productos_carrito %}
@@ -183,17 +192,6 @@
             </div>
 
         {% endfor %}
-            {% if productos_carrito %}
-
-            {% for item in productos_carrito %}
-
-                <div class="cart-item" id="cart-item-{{ item.producto.id }}">
-
-                    <!-- aquí sigue todo tu contenido del producto -->
-
-                </div>
-
-            {% endfor %}
 
 
             <!-- TOTAL DEL CARRITO -->
@@ -209,15 +207,6 @@
                 </h3>
 
             </div>
-
-
-        {% else %}
-
-            <p>
-                Tu carrito está vacío.
-            </p>
-
-        {% endif %}
 
 
     {% else %}
