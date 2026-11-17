@@ -1,0 +1,118 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ producto.nombre }} | Perfumundo</title>
+
+    <link rel="stylesheet" href="{% static 'tienda/css/estilos.css' %}">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <a href="{% url 'inicio' %}" class="logo">
+            PERFUMUNDO
+        </a>
+
+        <nav>
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="{% url 'catalogo' %}">Catálogo</a>
+            <a href="#">Ofertas</a>
+            <a href="#">Nosotros</a>
+            <a href="#">Contacto</a>
+        </nav>
+
+        <div class="nav-actions">
+            <button class="search-btn">⌕</button>
+            <button class="cart-btn">🛒</button>
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <section class="product-detail">
+
+            <div class="product-detail-image">
+
+                {% if producto.imagen %}
+
+                    <img
+                        src="{{ producto.imagen.url }}"
+                        alt="{{ producto.nombre }}"
+                    >
+
+                {% else %}
+
+                    PERFUME
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="product-detail-info">
+
+                <p class="product-brand">
+                    {{ producto.marca }}
+                </p>
+
+                <h1>
+                    {{ producto.nombre }}
+                </h1>
+
+                <p class="product-detail-price">
+                    ${{ producto.precio }} MXN
+                </p>
+
+                <p class="product-description">
+                    {{ producto.descripcion }}
+                </p>
+
+                <p>
+                    <strong>Categoría:</strong>
+                    {{ producto.categoria }}
+                </p>
+
+                <p>
+                    <strong>Disponibles:</strong>
+                    {{ producto.stock }}
+                </p>
+
+                <button class="add-cart-button">
+                    Agregar al carrito
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <div class="footer-logo">
+            PERFUMUNDO
+        </div>
+
+        <p>
+            Tu tienda de perfumería.
+        </p>
+
+        <div class="footer-bottom">
+            © 2026 Perfumundo. Todos los derechos reservados.
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

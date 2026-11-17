@@ -1,0 +1,257 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Carrito | Perfumundo</title>
+
+<link rel="stylesheet" href="{% static 'tienda/css/estilos.css' %}">
+
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+
+<a href="{% url 'inicio' %}" class="logo">
+    PERFUMUNDO
+</a>
+
+<nav>
+    <a href="{% url 'inicio' %}">Inicio</a>
+    <a href="{% url 'catalogo' %}">Catálogo</a>
+    <a href="#">Ofertas</a>
+    <a href="#">Nosotros</a>
+    <a href="#">Contacto</a>
+</nav>
+
+<div class="nav-actions">
+
+    <button class="search-btn">
+        ⌕
+    </button>
+
+    <a href="{% url 'carrito' %}" class="cart-btn">
+        🛒
+    </a>
+
+</div>
+
+
+</header>
+
+<!-- CARRITO -->
+
+<main>
+
+
+<section class="featured">
+
+    <div class="section-heading">
+
+        <p>
+            PERFUMUNDO
+        </p>
+
+        <h2>
+            Tu carrito
+        </h2>
+
+    </div>
+
+
+    {% if productos_carrito %}
+
+        {% for item in productos_carrito %}
+
+            <div class="cart-item" id="cart-item-{{ item.producto.id }}">
+
+                <div class="cart-item-image">
+
+                    {% if item.producto.imagen %}
+
+                        <img
+                            src="{{ item.producto.imagen.url }}"
+                            alt="{{ item.producto.nombre }}"
+                        >
+
+                    {% else %}
+
+                        PERFUME
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="cart-item-info">
+
+                    <p class="product-brand">
+                        {{ item.producto.marca }}
+                    </p>
+
+                    <h3>
+                        {{ item.producto.nombre }}
+                    </h3>
+
+                    <p>
+                        Precio: ${{ item.producto.precio }} MXN
+                    </p>
+
+
+                    <!-- CANTIDAD -->
+
+                    <div class="quantity-control">
+
+                        <form
+                            action="{% url 'actualizar_carrito' item.producto.id %}"
+                            method="POST"
+                            class="quantity-form"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                name="cantidad"
+                                value="{{ item.cantidad|add:'-1' }}"
+                            >
+                                −
+                            </button>
+
+                            <span class="quantity">
+                                {{ item.cantidad }}
+                            </span>
+
+                            <button
+                                type="submit"
+                                name="cantidad"
+                                value="{{ item.cantidad|add:'1' }}"
+                            >
+                                +
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- SUBTOTAL -->
+
+                    <p class="cart-subtotal">
+
+                        Subtotal:
+                        ${{ item.subtotal }} MXN
+
+                    </p>
+
+
+                    <!-- ELIMINAR -->
+
+                    <form
+                        action="{% url 'actualizar_carrito' item.producto.id %}"
+                        method="POST"
+                        class="remove-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            name="cantidad"
+                            value="0"
+                            class="remove-cart-button"
+                        >
+                            Eliminar
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+            {% if productos_carrito %}
+
+            {% for item in productos_carrito %}
+
+                <div class="cart-item" id="cart-item-{{ item.producto.id }}">
+
+                    <!-- aquí sigue todo tu contenido del producto -->
+
+                </div>
+
+            {% endfor %}
+
+
+            <!-- TOTAL DEL CARRITO -->
+
+            <div class="cart-total">
+
+                <p>
+                    Total
+                </p>
+
+                <h3>
+                    ${{ total }} MXN
+                </h3>
+
+            </div>
+
+
+        {% else %}
+
+            <p>
+                Tu carrito está vacío.
+            </p>
+
+        {% endif %}
+
+
+    {% else %}
+
+        <p>
+            Tu carrito está vacío.
+        </p>
+
+    {% endif %}
+
+</section>
+
+
+</main>
+
+<!-- FOOTER -->
+
+<footer>
+
+<div class="footer-logo">
+    PERFUMUNDO
+</div>
+
+<p>
+    Tu tienda de perfumería.
+</p>
+
+<div class="footer-bottom">
+    © 2026 Perfumundo. Todos los derechos reservados.
+</div>
+
+
+</footer>
+
+</body>
+
+</html>

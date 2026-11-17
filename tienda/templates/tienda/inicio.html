@@ -1,18 +1,257 @@
 {% load static %}
 
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Perfumundo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'tienda/css/estilos.css' %}">
+
+<title>Perfumundo | Tu tienda de perfumes</title>
+
+<link rel="stylesheet" href="{% static 'tienda/css/estilos.css' %}">
+
+
 </head>
 
 <body>
 
-    <h1>Bienvenido a Perfumundo</h1>
-    <p>Tu tienda de perfumes</p>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+    <a href="{% url 'inicio' %}" class="logo">
+        PERFUMUNDO
+    </a>
+
+    <nav>
+        <a href="{% url 'inicio' %}">Inicio</a>
+        <a href="{% url 'catalogo' %}">Catálogo</a>
+        <a href="#">Ofertas</a>
+        <a href="#">Nosotros</a>
+        <a href="#">Contacto</a>
+    </nav>
+
+    <div class="nav-actions">
+
+    <button class="search-btn">
+        ⌕
+    </button>
+
+    <a href="{% url 'carrito' %}" class="cart-btn">
+        🛒
+    </a>
+
+</div>
+
+</header>
+
+
+<!-- HERO -->
+<main>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="hero-small">
+                DESCUBRE TU ESENCIA
+            </p>
+
+            <h1>
+                Una fragancia
+                <span>para cada historia.</span>
+            </h1>
+
+            <p class="hero-description">
+                Explora nuestra selección de perfumes y
+                encuentra el aroma que representa tu
+                personalidad.
+            </p>
+
+            <a href="{% url 'catalogo' %}" class="hero-button">
+                Explorar catálogo
+            </a>
+
+        </div>
+
+        <div class="hero-image">
+
+            <div class="perfume-placeholder">
+                <span>PERFUMUNDO</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CATEGORÍAS -->
+    <section class="categories">
+
+        <div class="section-heading">
+
+            <p>
+                ENCUENTRA TU FRAGANCIA
+            </p>
+
+            <h2>
+                Explora nuestras categorías
+            </h2>
+
+        </div>
+
+
+        <div class="category-grid">
+
+            <a href="{% url 'catalogo' %}?categoria=Hombre" class="category-card">
+
+                <span>01</span>
+
+                <h3>
+                    Perfumes para hombre
+                </h3>
+
+                <p>
+                    Fragancias intensas y sofisticadas.
+                </p>
+
+            </a>
+
+
+            <a href="{% url 'catalogo' %}?categoria=Mujer" class="category-card">
+
+                <span>02</span>
+
+                <h3>
+                    Perfumes para mujer
+                </h3>
+
+                <p>
+                    Aromas elegantes y cautivadores.
+                </p>
+
+            </a>
+
+
+            <a href="{% url 'catalogo' %}?categoria=Unisex" class="category-card">
+
+                <span>03</span>
+
+                <h3>
+                    Fragancias exclusivas
+                </h3>
+
+                <p>
+                    Descubre aromas únicos.
+                </p>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUCTOS DESTACADOS -->
+    <section class="featured">
+
+        <div class="section-heading">
+
+            <p>
+                SELECCIÓN PERFUMUNDO
+            </p>
+
+            <h2>
+                Productos destacados
+            </h2>
+
+        </div>
+
+
+        <div class="products-grid">
+
+{% for producto in productos %}
+
+    <article class="product-card">
+
+        <a href="{% url 'detalle_producto' producto.id %}" class="product-link">
+
+    <div class="product-image">
+
+        {% if producto.imagen %}
+            <img
+                src="{{ producto.imagen.url }}"
+                alt="{{ producto.nombre }}"
+            >
+        {% else %}
+            PERFUME
+        {% endif %}
+
+    </div>
+
+</a>
+
+        <div class="product-info">
+
+            <a href="{% url 'detalle_producto' producto.id %}" class="product-link">
+
+                <p class="product-brand">
+                    {{ producto.marca }}
+                </p>
+
+                <h3>
+                    {{ producto.nombre }}
+                </h3>
+
+                <p class="product-price">
+                    ${{ producto.precio }} MXN
+                </p>
+
+            </a>
+
+            <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
+
+    {% csrf_token %}
+
+    <button type="submit">
+        Agregar al carrito
+    </button>
+
+</form>
+
+        </div>
+
+    </article>
+
+{% endfor %}
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <div class="footer-logo">
+        PERFUMUNDO
+    </div>
+
+    <p>
+        Tu tienda de perfumería.
+    </p>
+
+    <div class="footer-bottom">
+        © 2026 Perfumundo. Todos los derechos reservados.
+    </div>
+
+</footer>
 
 </body>
+
 </html>
