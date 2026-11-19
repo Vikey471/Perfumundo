@@ -1,0 +1,40 @@
+{% extends "tienda/base.html" %}
+
+{% block title %}Entrar | Perfumundo{% endblock %}
+
+{% block content %}
+
+<section class="account-page">
+
+    <div class="section-heading">
+        <p>PERFUMUNDO</p>
+        <h2>Entrar a tu cuenta</h2>
+    </div>
+
+    <form method="POST" class="account-form" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="field">{{ form.username.as_field_group }}</div>
+        <div class="field">{{ form.password.as_field_group }}</div>
+
+        <input type="hidden" name="next" value="{{ next }}">
+
+        <button type="submit" class="add-cart-button">Entrar</button>
+
+        <p class="account-switch">
+            ¿Aún no tienes cuenta?
+            <a href="{% url 'registro' %}">Regístrate</a>
+        </p>
+    </form>
+
+</section>
+
+{% endblock %}

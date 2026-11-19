@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Perfumundo | Tu tienda de perfumes{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'tienda/css/estilos.css' %}?v={{ version_estaticos }}">
+    <script src="{% static 'tienda/js/animaciones.js' %}?v={{ version_estaticos }}" defer></script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <a href="{% url 'inicio' %}" class="logo">
+            PERFUMUNDO
+        </a>
+
+        <nav>
+            {% with ruta=request.resolver_match.url_name categoria=request.GET.categoria %}
+                <a href="{% url 'inicio' %}" class="{% if ruta == 'inicio' %}active{% endif %}">Inicio</a>
+                <a href="{% url 'catalogo' %}" class="{% if ruta == 'catalogo' and not categoria %}active{% endif %}">Catálogo</a>
+                {% for valor, etiqueta in categorias_menu %}
+                    <a href="{% url 'catalogo' %}?categoria={{ valor }}"
+                       class="{% if ruta == 'catalogo' and categoria == valor %}active{% endif %}">
+                        {{ etiqueta }}
+                    </a>
+                {% endfor %}
+            {% endwith %}
+        </nav>
+
+        <div class="nav-actions">
+
+            <form action="{% url 'catalogo' %}" method="GET" class="search-form" role="search">
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ request.GET.q }}"
+                    placeholder="Buscar perfume o marca"
+                    aria-label="Buscar perfume o marca"
+                >
+                <button type="submit" class="search-btn" aria-label="Buscar">⌕</button>
+            </form>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'mi_cuenta' %}" class="account-link">Mi cuenta</a>
+            {% else %}
+                <a href="{% url 'entrar' %}" class="account-link">Entrar</a>
+            {% endif %}
+
+            <a href="{% url 'carrito' %}" class="cart-btn" aria-label="Carrito">
+                🛒
+                {% if carrito_cantidad %}
+                    <span class="cart-count">{{ carrito_cantidad }}</span>
+                {% endif %}
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        {% if messages %}
+            <div class="site-messages">
+                {% for message in messages %}
+                    <p class="cart-message cart-message-{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div class="footer-logo">
+            PERFUMUNDO
+        </div>
+
+        <p>
+            Tu tienda de perfumería.
+        </p>
+
+        <div class="footer-bottom">
+            © {% now "Y" %} Perfumundo. Todos los derechos reservados.
+        </div>
+
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>

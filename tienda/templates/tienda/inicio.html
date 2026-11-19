@@ -1,18 +1,192 @@
-{% load static %}
+{% extends "tienda/base.html" %}
+{% load precios %}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Perfumundo</title>
+{% block content %}
 
-    <link rel="stylesheet" href="{% static 'tienda/css/estilos.css' %}">
-</head>
+    <section class="hero">
 
-<body>
+        <div class="hero-content">
 
-    <h1>Bienvenido a Perfumundo</h1>
-    <p>Tu tienda de perfumes</p>
+            <p class="hero-small">
+                DESCUBRE TU ESENCIA
+            </p>
 
-</body>
-</html>
+            <h1>
+                Una fragancia
+                <span>para cada historia.</span>
+            </h1>
+
+            <p class="hero-description">
+                Explora nuestra selección de perfumes y
+                encuentra el aroma que representa tu
+                personalidad.
+            </p>
+
+            <a href="{% url 'catalogo' %}" class="hero-button">
+                Explorar catálogo
+            </a>
+
+        </div>
+
+        <div class="hero-image">
+
+            <div class="perfume-placeholder">
+                <span>PERFUMUNDO</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CINTA DE PROMOCIONES -->
+    {% include "tienda/_cinta_promociones.html" %}
+
+
+    <!-- CATEGORÍAS -->
+    <section class="categories">
+
+        <div class="section-heading">
+
+            <p>
+                ENCUENTRA TU FRAGANCIA
+            </p>
+
+            <h2>
+                Explora nuestras categorías
+            </h2>
+
+        </div>
+
+
+        <div class="category-grid">
+
+            <a href="{% url 'catalogo' %}?categoria=arabe" class="category-card">
+
+                <span>01</span>
+
+                <h3>
+                    Perfumes árabes
+                </h3>
+
+                <p>
+                    Casas árabes con fragancias intensas y duraderas.
+                </p>
+
+            </a>
+
+
+            <a href="{% url 'catalogo' %}?categoria=disenador" class="category-card">
+
+                <span>02</span>
+
+                <h3>
+                    Perfumes de diseñador
+                </h3>
+
+                <p>
+                    Las grandes casas de moda y sus clásicos.
+                </p>
+
+            </a>
+
+
+            <a href="{% url 'catalogo' %}?categoria=nicho" class="category-card">
+
+                <span>03</span>
+
+                <h3>
+                    Perfumes nicho
+                </h3>
+
+                <p>
+                    Marcas exclusivas con aromas únicos.
+                </p>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUCTOS DESTACADOS -->
+    <section class="featured">
+
+        <div class="section-heading">
+
+            <p>
+                SELECCIÓN PERFUMUNDO
+            </p>
+
+            <h2>
+                Productos destacados
+            </h2>
+
+        </div>
+
+
+        <div class="products-grid">
+
+{% for producto in productos %}
+
+    <article class="product-card">
+
+        <a href="{{ producto.get_absolute_url }}" class="product-link">
+
+    <div class="product-image">
+
+        {% if producto.imagen %}
+            <img
+                src="{{ producto.imagen.url }}"
+                alt="{{ producto.nombre }}"
+            >
+        {% else %}
+            PERFUME
+        {% endif %}
+
+    </div>
+
+</a>
+
+        <div class="product-info">
+
+            <a href="{{ producto.get_absolute_url }}" class="product-link">
+
+                <p class="product-brand">
+                    {{ producto.marca }}
+                </p>
+
+                <h3>
+                    {{ producto.nombre }}
+                </h3>
+
+                <p class="product-meta">
+                    {{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml
+                </p>
+
+                {% precio_producto producto %}
+
+            </a>
+
+            <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
+
+    {% csrf_token %}
+
+    <button type="submit">
+        Agregar al carrito
+    </button>
+
+</form>
+
+        </div>
+
+    </article>
+
+{% endfor %}
+
+        </div>
+
+    </section>
+
+{% endblock %}
