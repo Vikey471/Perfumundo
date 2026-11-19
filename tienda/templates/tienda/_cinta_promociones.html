@@ -1,0 +1,37 @@
+{% comment %}
+    Cinta de promociones que se desplaza sola.
+    Por ahora muestra espacios vacíos; después se llenará con perfumes en promoción.
+    La lista se repite dos veces para que el movimiento sea continuo.
+{% endcomment %}
+<section class="promo-strip" aria-label="Promociones">
+
+    <div class="promo-strip-heading">
+        <p>PROMOCIONES</p>
+        <h2>Ofertas de la semana</h2>
+    </div>
+
+    <div class="promo-viewport">
+        {% for vuelta in "12" %}
+            <ul class="promo-track" {% if forloop.last %}aria-hidden="true"{% endif %}>
+                {% for espacio in "123456" %}
+                    <li class="promo-card">
+                        <span class="promo-badge">-00%</span>
+
+                        <div class="promo-image">PERFUME</div>
+
+                        <div class="promo-info">
+                            <p class="product-brand">Marca</p>
+                            <h3>Nombre del perfume</h3>
+                            <p class="product-meta">Concentración · 00 ml</p>
+                            <p class="promo-price">
+                                <span class="price-old">$0.00</span>
+                                $0.00 MXN
+                            </p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+</section>
