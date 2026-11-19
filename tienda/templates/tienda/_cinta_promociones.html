@@ -1,37 +1,57 @@
 {% comment %}
-    Cinta de promociones que se desplaza sola.
+    Sección de promociones: fila horizontal que se recorre con flechas.
     Por ahora muestra espacios vacíos; después se llenará con perfumes en promoción.
-    La lista se repite dos veces para que el movimiento sea continuo.
 {% endcomment %}
-<section class="promo-strip" aria-label="Promociones">
+<section class="promo-section" aria-label="Promociones">
 
-    <div class="promo-strip-heading">
-        <p>PROMOCIONES</p>
-        <h2>Ofertas de la semana</h2>
+    <div class="promo-header">
+        <div>
+            <p class="promo-kicker">PROMOCIONES</p>
+            <h2>Ofertas de la semana</h2>
+            <p class="promo-subtitle">Fragancias seleccionadas con precio especial por tiempo limitado.</p>
+        </div>
+
+        <div class="promo-arrows">
+            <button type="button" class="promo-arrow" data-promo-prev aria-label="Ver promociones anteriores">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+            </button>
+            <button type="button" class="promo-arrow" data-promo-next aria-label="Ver más promociones">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </div>
     </div>
 
-    <div class="promo-viewport">
-        {% for vuelta in "12" %}
-            <ul class="promo-track" {% if forloop.last %}aria-hidden="true"{% endif %}>
-                {% for espacio in "123456" %}
-                    <li class="promo-card">
-                        <span class="promo-badge">-00%</span>
+    <ul class="promo-row" data-promo-row>
+        {% for espacio in "12345678" %}
+            <li class="promo-card">
 
-                        <div class="promo-image">PERFUME</div>
+                <span class="promo-badge">-00%</span>
 
-                        <div class="promo-info">
-                            <p class="product-brand">Marca</p>
-                            <h3>Nombre del perfume</h3>
-                            <p class="product-meta">Concentración · 00 ml</p>
-                            <p class="promo-price">
-                                <span class="price-old">$0.00</span>
-                                $0.00 MXN
-                            </p>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
+                <div class="promo-image">
+                    <svg class="promo-bottle" viewBox="0 0 120 160" aria-hidden="true">
+                        <rect x="48" y="8" width="24" height="16" rx="3"/>
+                        <rect x="53" y="24" width="14" height="12"/>
+                        <rect x="22" y="36" width="76" height="112" rx="14"/>
+                        <rect class="promo-bottle-label" x="36" y="78" width="48" height="26" rx="2"/>
+                    </svg>
+                    <span class="promo-soon">Próximamente</span>
+                </div>
+
+                <div class="promo-info">
+                    <p class="promo-brand">Marca</p>
+                    <h3>Nombre del perfume</h3>
+                    <p class="promo-meta">Concentración · 00 ml</p>
+
+                    <div class="promo-price-row">
+                        <span class="promo-price-old">$0.00</span>
+                        <span class="promo-price">$0.00 <small>MXN</small></span>
+                    </div>
+
+                    <span class="promo-button" aria-disabled="true">Ver oferta</span>
+                </div>
+
+            </li>
         {% endfor %}
-    </div>
+    </ul>
 
 </section>
