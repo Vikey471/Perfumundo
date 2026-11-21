@@ -29,7 +29,8 @@
         '.account-form',
         '.account-status',
         '.order-summary',
-        '.order-card'
+        '.order-card',
+        '.contact-card'
     ];
 
     const elementos = document.querySelectorAll(SELECTORES.join(','));

@@ -1592,3 +1592,108 @@ footer p {
         flex-basis: 78%;
     }
 }
+
+/* =========================
+   CONTACTO Y REDES SOCIALES
+========================= */
+
+.contact-section {
+    padding: 100px 7%;
+    text-align: center;
+    border-top: 1px solid #1f1a0e;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.10), transparent 60%),
+        #0b0b0b;
+}
+
+.contact-heading h2 {
+    margin-bottom: 14px;
+}
+
+.contact-subtitle {
+    color: #8a8a8a;
+    font-size: 15px;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 260px));
+    justify-content: center;
+    gap: 24px;
+}
+
+.contact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 36px 24px 30px;
+    background: linear-gradient(180deg, #171717 0%, #111 100%);
+    border: 1px solid #2a2a2a;
+    text-decoration: none;
+    color: #f4f0e8;
+    transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s;
+}
+
+.contact-card img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 8px;
+    transition: transform 0.4s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-6px);
+}
+
+.contact-card:hover img {
+    transform: scale(1.1) rotate(-4deg);
+}
+
+.contact-whatsapp:hover {
+    border-color: #25D366;
+    box-shadow: 0 14px 40px rgba(37, 211, 102, 0.15);
+}
+
+.contact-instagram:hover {
+    border-color: #D6249F;
+    box-shadow: 0 14px 40px rgba(214, 36, 159, 0.15);
+}
+
+.contact-facebook:hover {
+    border-color: #0866FF;
+    box-shadow: 0 14px 40px rgba(8, 102, 255, 0.15);
+}
+
+.contact-network {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.contact-handle {
+    color: #9a9a9a;
+    font-size: 14px;
+}
+
+.contact-action {
+    margin-top: 10px;
+    padding: 9px 18px;
+    border: 1px solid #3a3a3a;
+    color: #d4af37;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: border-color 0.3s, background 0.3s, color 0.3s;
+}
+
+.contact-card:hover .contact-action {
+    border-color: #d4af37;
+    background: #d4af37;
+    color: #111;
+}
+
+@media (max-width: 800px) {
+    .contact-grid {
+        grid-template-columns: minmax(0, 340px);
+    }
+}
