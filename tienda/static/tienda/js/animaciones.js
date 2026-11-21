@@ -3,6 +3,7 @@
  *  1. Difuminado: los elementos aparecen desenfocados y se aclaran al entrar
  *     en pantalla (al cargar y al hacer scroll).
  *  2. Promociones: fila horizontal que se recorre con flechas.
+ *  3. Contador del carrito: da un pequeño salto cuando aumenta.
  */
 (function () {
     'use strict';
@@ -91,4 +92,23 @@
         window.addEventListener('resize', actualizarFlechas);
         actualizarFlechas();
     });
+    /* ---------- 3. Salto del contador del carrito ---------- */
+
+    (function () {
+        const contador = document.querySelector('[data-cart-count]');
+        const actual = contador ? parseInt(contador.dataset.cartCount, 10) : 0;
+        let anterior = null;
+
+        try {
+            anterior = parseInt(sessionStorage.getItem('perfumundo-carrito'), 10);
+            sessionStorage.setItem('perfumundo-carrito', String(actual));
+        } catch (e) { /* sin almacenamiento: no pasa nada */ }
+
+        if (contador && !isNaN(anterior) && actual > anterior) {
+            contador.classList.add('is-bumping');
+            contador.addEventListener('animationend', function () {
+                contador.classList.remove('is-bumping');
+            }, { once: true });
+        }
+    })();
 })();

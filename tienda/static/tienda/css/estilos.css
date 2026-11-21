@@ -1734,3 +1734,168 @@ footer p {
         gap: 18px;
     }
 }
+
+/* =========================
+   BARRA SUPERIOR: ANIMACIONES
+   Todo en dorado, solo al pasar el cursor, ~0.3 s
+========================= */
+
+.navbar {
+    --dorado: #d4af37;
+    --dorado-brillo: rgba(212, 175, 55, 0.45);
+}
+
+/* Enlaces del menú: línea dorada que crece desde el centro */
+.navbar nav a {
+    position: relative;
+    padding: 6px 0;
+    transition: color 0.3s ease;
+}
+
+.navbar nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--dorado);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.navbar nav a:hover,
+.navbar nav a.active {
+    color: var(--dorado);
+}
+
+.navbar nav a:hover::after,
+.navbar nav a.active::after {
+    transform: scaleX(1);
+}
+
+.account-link {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.account-link:hover {
+    text-shadow: 0 0 12px var(--dorado-brillo);
+}
+
+/* Barra de búsqueda: se ilumina al acercar el cursor y se ensancha al escribir */
+.search-form {
+    gap: 4px;
+    padding: 2px 6px 2px 14px;
+    border: 1px solid #2e2e2e;
+    border-radius: 999px;
+    background: #141414;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.search-form input {
+    width: 160px;
+    transition: width 0.3s ease;
+}
+
+.search-form input::placeholder {
+    color: #6f6f6f;
+    transition: color 0.3s ease;
+}
+
+.search-form:hover,
+.search-form:focus-within {
+    border-color: var(--dorado);
+    background: #171510;
+    box-shadow: 0 0 14px var(--dorado-brillo), inset 0 0 6px rgba(212, 175, 55, 0.08);
+}
+
+.search-form:hover input::placeholder {
+    color: #9a8a5c;
+}
+
+.search-form:focus-within input {
+    width: 210px;
+}
+
+/* Lupa y carrito: íconos que se doran, brillan y crecen un poco */
+.search-btn,
+.cart-btn {
+    display: grid;
+    place-items: center;
+    color: #cfcfcf;
+    transition: color 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+}
+
+.search-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+}
+
+.search-btn svg,
+.cart-btn svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.search-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.cart-btn svg {
+    width: 26px;
+    height: 26px;
+}
+
+.cart-btn,
+.cart-btn:visited {
+    color: #cfcfcf;
+}
+
+.search-form:hover .search-btn,
+.search-btn:focus-visible,
+.cart-btn:hover,
+.cart-btn:focus-visible {
+    color: var(--dorado);
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 6px var(--dorado-brillo));
+}
+
+/* Contador del carrito: pequeño salto solo cuando aumenta */
+.cart-count {
+    transition: box-shadow 0.3s ease;
+}
+
+.cart-btn:hover .cart-count {
+    box-shadow: 0 0 10px var(--dorado-brillo);
+}
+
+.cart-count.is-bumping {
+    animation: contador-salta 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes contador-salta {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.45); }
+    65%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cart-count.is-bumping {
+        animation: none;
+    }
+}
+
+.nav-actions .search-btn {
+    color: #cfcfcf;
+}
+
+.nav-actions {
+    gap: 18px;
+}
