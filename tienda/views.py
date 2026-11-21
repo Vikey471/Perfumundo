@@ -7,15 +7,21 @@ from .carrito import Carrito
 from .models import LIQUIDACION, SECCIONES, Marca, Producto
 
 
+# Cuántas tarjetas mínimo muestra la fila de destacados (las que falten
+# se rellenan con espacios vacíos mientras se cargan más productos).
+TARJETAS_DESTACADOS = 8
+
+
 def inicio(request):
-    productos = (
+    productos = list(
         Producto.objects
         .filter(activo=True, destacado=True)
         .select_related('marca')
     )
 
     return render(request, 'tienda/inicio.html', {
-        'productos': productos
+        'productos': productos,
+        'espacios_vacios': range(max(0, TARJETAS_DESTACADOS - len(productos))),
     })
 
 

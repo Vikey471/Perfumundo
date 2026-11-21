@@ -39,86 +39,85 @@
     </section>
 
 
-    <!-- PRODUCTOS DESTACADOS -->
-    <section class="featured">
+    <!-- PRODUCTOS DESTACADOS (FILA CON FLECHAS) -->
+    <section class="promo-section featured-slider" aria-label="Productos destacados">
 
-        <div class="section-heading">
+        <div class="promo-header">
+            <div>
+                <p class="promo-kicker">SELECCIÓN PERFUMUNDO</p>
+                <h2>Productos destacados</h2>
+                <p class="promo-subtitle">Las fragancias favoritas de nuestros clientes.</p>
+            </div>
 
-            <p>
-                SELECCIÓN PERFUMUNDO
-            </p>
-
-            <h2>
-                Productos destacados
-            </h2>
-
+            <div class="promo-arrows">
+                <button type="button" class="promo-arrow" data-promo-prev aria-label="Ver destacados anteriores">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+                </button>
+                <button type="button" class="promo-arrow" data-promo-next aria-label="Ver más destacados">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
         </div>
 
+        <ul class="promo-row" data-promo-row>
 
-        <div class="products-grid">
+            {% for producto in productos %}
+                <li class="promo-card featured-card">
 
-{% for producto in productos %}
+                    {% if producto.liquidacion %}
+                        <span class="promo-badge">{{ producto.detalle_liquidacion|default:"Liquidación" }}</span>
+                    {% endif %}
 
-    <article class="product-card">
+                    <a href="{{ producto.get_absolute_url }}" class="featured-image">
+                        {% if producto.imagen %}
+                            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+                        {% else %}
+                            <span class="promo-soon">Sin imagen</span>
+                        {% endif %}
+                    </a>
 
-        <a href="{{ producto.get_absolute_url }}" class="product-link">
+                    <div class="promo-info">
+                        <a href="{{ producto.get_absolute_url }}" class="featured-link">
+                            <p class="promo-brand">{{ producto.marca.nombre }}</p>
+                            <h3>{{ producto.nombre }}</h3>
+                            <p class="promo-meta">{{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml</p>
+                            {% precio_producto producto "featured-price" %}
+                        </a>
 
-    <div class="product-image">
+                        <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="promo-button featured-button">Agregar al carrito</button>
+                        </form>
+                    </div>
 
-        {% if producto.liquidacion %}
-            <span class="liquidation-badge">{{ producto.detalle_liquidacion|default:"Liquidación" }}</span>
-        {% endif %}
+                </li>
+            {% endfor %}
 
-        {% if producto.imagen %}
-            <img
-                src="{{ producto.imagen.url }}"
-                alt="{{ producto.nombre }}"
-            >
-        {% else %}
-            PERFUME
-        {% endif %}
+            {% for espacio in espacios_vacios %}
+                <li class="promo-card">
 
-    </div>
+                    <div class="promo-image">
+                        <svg class="promo-bottle" viewBox="0 0 120 160" aria-hidden="true">
+                            <rect x="48" y="8" width="24" height="16" rx="3"/>
+                            <rect x="53" y="24" width="14" height="12"/>
+                            <rect x="22" y="36" width="76" height="112" rx="14"/>
+                            <rect class="promo-bottle-label" x="36" y="78" width="48" height="26" rx="2"/>
+                        </svg>
+                        <span class="promo-soon">Próximamente</span>
+                    </div>
 
-</a>
+                    <div class="promo-info">
+                        <p class="promo-brand">Marca</p>
+                        <h3>Nombre del perfume</h3>
+                        <p class="promo-meta">Concentración · 00 ml</p>
+                        <p class="featured-price">$0.00 MXN</p>
+                        <span class="promo-button" aria-disabled="true">Agregar al carrito</span>
+                    </div>
 
-        <div class="product-info">
+                </li>
+            {% endfor %}
 
-            <a href="{{ producto.get_absolute_url }}" class="product-link">
-
-                <p class="product-brand">
-                    {{ producto.marca }}
-                </p>
-
-                <h3>
-                    {{ producto.nombre }}
-                </h3>
-
-                <p class="product-meta">
-                    {{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml
-                </p>
-
-                {% precio_producto producto %}
-
-            </a>
-
-            <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
-
-    {% csrf_token %}
-
-    <button type="submit">
-        Agregar al carrito
-    </button>
-
-</form>
-
-        </div>
-
-    </article>
-
-{% endfor %}
-
-        </div>
+        </ul>
 
     </section>
 
