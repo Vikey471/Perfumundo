@@ -19,8 +19,9 @@
     <!-- NAVBAR -->
     <header class="navbar">
 
-        <a href="{% url 'inicio' %}" class="logo">
-            PERFUMUNDO
+        <a href="{% url 'inicio' %}" class="logo" aria-label="Perfumundo, ir al inicio">
+            <img src="{% static 'tienda/img/logo-simbolo.svg' %}" alt="" class="logo-simbolo" width="46" height="46">
+            <img src="{% static 'tienda/img/logo-texto.svg' %}" alt="Perfumundo" class="logo-texto" width="150" height="12">
         </a>
 
         <nav>
