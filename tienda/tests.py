@@ -45,3 +45,34 @@ class CatalogoTests(TestCase):
     def test_detalle_muestra_aviso_de_liquidacion(self):
         r = self.client.get(self.sauvage.get_absolute_url())
         self.assertContains(r, 'liquidation-note')
+
+
+class BannerTests(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        from .models import Banner
+        dior = Marca.objects.create(nombre='Dior', categoria=Marca.Categoria.DISENADOR)
+        cls.sauvage = Producto.objects.create(
+            nombre='Sauvage', marca=dior, descripcion='Prueba.', concentracion='EDT',
+            genero='Hombre', volumen_ml=200, precio=Decimal('2300.00'), stock=1,
+        )
+        cls.Banner = Banner
+
+    def test_sin_banners_muestra_logo(self):
+        r = self.client.get(reverse('inicio'))
+        self.assertContains(r, 'banner-empty')
+        self.assertNotContains(r, 'data-carousel')
+
+    def test_banners_activos_en_orden_y_enlace_al_producto(self):
+        self.Banner.objects.create(titulo='Segundo', imagen='banners/b.jpg', orden=2, enlace='/catalogo/?categoria=arabe')
+        self.Banner.objects.create(titulo='Primero', imagen='banners/a.jpg', orden=1, producto=self.sauvage)
+        self.Banner.objects.create(titulo='Oculto', imagen='banners/c.jpg', orden=0, activo=False)
+
+        r = self.client.get(reverse('inicio'))
+        html = r.content.decode()
+        self.assertContains(r, 'data-carousel')
+        self.assertNotContains(r, 'Oculto')
+        self.assertLess(html.index('Primero'), html.index('Segundo'))
+        self.assertContains(r, self.sauvage.get_absolute_url())
+        self.assertContains(r, 'data-slide=', count=2)

@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from .carrito import Carrito
-from .models import LIQUIDACION, SECCIONES, Marca, Producto
+from .models import LIQUIDACION, SECCIONES, Banner, Marca, Producto
 
 
 # Cuántas tarjetas mínimo muestra la fila de destacados (las que falten
@@ -22,6 +22,7 @@ def inicio(request):
     return render(request, 'tienda/inicio.html', {
         'productos': productos,
         'espacios_vacios': range(max(0, TARJETAS_DESTACADOS - len(productos))),
+        'banners': Banner.objects.filter(activo=True).select_related('producto'),
     })
 
 

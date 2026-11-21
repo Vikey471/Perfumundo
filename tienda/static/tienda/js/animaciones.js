@@ -4,6 +4,7 @@
  *     en pantalla (al cargar y al hacer scroll).
  *  2. Promociones: fila horizontal que se recorre con flechas.
  *  3. Contador del carrito: da un pequeño salto cuando aumenta.
+ *  4. Carrusel de banners de la portada (cambia solo con difuminado).
  */
 (function () {
     'use strict';
@@ -111,4 +112,44 @@
             }, { once: true });
         }
     })();
+    /* ---------- 4. Carrusel de banners ---------- */
+
+    document.querySelectorAll('[data-carousel]').forEach(function (carrusel) {
+        const slides = carrusel.querySelectorAll('.banner-slide');
+        const puntos = carrusel.querySelectorAll('.banner-dot');
+        const barra = carrusel.querySelector('.banner-progress span');
+        const intervalo = parseInt(carrusel.dataset.intervalo, 10) || 5000;
+        if (slides.length < 2 || !barra) { return; }
+
+        let actual = 0;
+        barra.style.animationDuration = intervalo + 'ms';
+
+        function mostrar(n) {
+            actual = (n + slides.length) % slides.length;
+            slides.forEach(function (slide, i) {
+                const activo = i === actual;
+                slide.classList.toggle('is-active', activo);
+                slide.setAttribute('aria-hidden', activo ? 'false' : 'true');
+                const boton = slide.querySelector('a');
+                if (boton) { boton.tabIndex = activo ? 0 : -1; }
+            });
+            puntos.forEach(function (punto, i) {
+                punto.classList.toggle('is-active', i === actual);
+                punto.setAttribute('aria-selected', i === actual ? 'true' : 'false');
+            });
+            // Reinicia la barra de progreso; al terminar pasa al siguiente.
+            barra.classList.remove('is-running');
+            void barra.offsetWidth;
+            barra.classList.add('is-running');
+        }
+
+        barra.addEventListener('animationend', function () { mostrar(actual + 1); });
+        puntos.forEach(function (punto) {
+            punto.addEventListener('click', function () {
+                mostrar(parseInt(punto.dataset.slide, 10));
+            });
+        });
+
+        mostrar(0);
+    });
 })();

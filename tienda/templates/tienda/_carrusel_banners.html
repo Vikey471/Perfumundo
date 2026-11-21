@@ -1,0 +1,52 @@
+{% load static %}
+{% comment %}
+    Carrusel de banners de la portada. Los banners se suben en el admin
+    (Tienda › Banners de la portada). Cambia solo cada 5 s con difuminado.
+{% endcomment %}
+{% if banners %}
+    <div class="banner-carousel" data-carousel data-intervalo="5000"
+         aria-roledescription="carrusel" aria-label="Promociones destacadas">
+
+        <div class="banner-slides">
+            {% for banner in banners %}
+                <figure class="banner-slide{% if forloop.first %} is-active{% endif %}"
+                        aria-roledescription="diapositiva"
+                        aria-label="{{ forloop.counter }} de {{ banners|length }}"
+                        {% if not forloop.first %}aria-hidden="true"{% endif %}>
+
+                    <img src="{{ banner.imagen.url }}" alt="{{ banner.titulo }}"
+                         {% if not forloop.first %}loading="lazy"{% endif %}>
+
+                    <figcaption class="banner-caption">
+                        <h3>{{ banner.titulo }}</h3>
+                        {% if banner.subtitulo %}<p>{{ banner.subtitulo }}</p>{% endif %}
+                        {% if banner.url_destino %}
+                            <a href="{{ banner.url_destino }}" class="banner-button"
+                               {% if not forloop.first %}tabindex="-1"{% endif %}>
+                                {{ banner.texto_boton }}
+                            </a>
+                        {% endif %}
+                    </figcaption>
+                </figure>
+            {% endfor %}
+        </div>
+
+        {% if banners|length > 1 %}
+            <div class="banner-dots" role="tablist" aria-label="Elegir banner">
+                {% for banner in banners %}
+                    <button type="button" class="banner-dot{% if forloop.first %} is-active{% endif %}"
+                            data-slide="{{ forloop.counter0 }}" role="tab"
+                            aria-label="Ver {{ banner.titulo }}"
+                            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+                {% endfor %}
+            </div>
+            <div class="banner-progress"><span></span></div>
+        {% endif %}
+
+    </div>
+{% else %}
+    {# Sin banners cargados: se muestra el logo #}
+    <div class="banner-empty">
+        <img src="{% static 'tienda/img/logo-simbolo.svg' %}" alt="Perfumundo">
+    </div>
+{% endif %}

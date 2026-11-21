@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from .models import ImagenProducto, Marca, Producto
+from django.utils.html import format_html
+
+from .models import Banner, ImagenProducto, Marca, Producto
 
 
 @admin.register(Marca)
@@ -68,3 +70,30 @@ class ProductoAdmin(admin.ModelAdmin):
             'fields': ('liquidacion', 'detalle_liquidacion'),
         }),
     )
+
+
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ('miniatura', 'titulo', 'producto', 'orden', 'activo')
+    list_display_links = ('miniatura', 'titulo')
+    list_editable = ('orden', 'activo')
+    list_filter = ('activo',)
+    list_select_related = ('producto',)
+    autocomplete_fields = ('producto',)
+    readonly_fields = ('vista_previa',)
+    fields = (
+        'titulo', 'subtitulo', 'imagen', 'vista_previa',
+        'texto_boton', 'producto', 'enlace', 'orden', 'activo',
+    )
+
+    @admin.display(description='Imagen')
+    def miniatura(self, obj):
+        if obj.imagen:
+            return format_html('<img src="{}" style="height:60px;border-radius:4px">', obj.imagen.url)
+        return '—'
+
+    @admin.display(description='Vista previa')
+    def vista_previa(self, obj):
+        if obj and obj.imagen:
+            return format_html('<img src="{}" style="max-height:260px;border-radius:6px">', obj.imagen.url)
+        return 'Se mostrará al guardar.'
