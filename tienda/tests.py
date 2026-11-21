@@ -75,4 +75,5 @@ class BannerTests(TestCase):
         self.assertNotContains(r, 'Oculto')
         self.assertLess(html.index('Primero'), html.index('Segundo'))
         self.assertContains(r, self.sauvage.get_absolute_url())
-        self.assertContains(r, 'data-slide=', count=2)
+        self.assertContains(r, '<figure class="banner-slide', count=2)
+        self.assertNotContains(r, 'banner-dot')

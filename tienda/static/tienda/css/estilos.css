@@ -2065,25 +2065,23 @@ footer p {
 ========================= */
 
 .hero-image {
-    width: 440px;
+    width: 460px;
     height: auto;
     flex-shrink: 0;
 }
 
+/* Sin bordes: la imagen se desvanece hacia el fondo por todos lados */
 .banner-carousel,
 .banner-empty {
     position: relative;
     width: 100%;
     aspect-ratio: 4 / 5;
-    overflow: hidden;
-    border: 1px solid rgba(212, 175, 55, 0.35);
-    background: #0e0e0e;
-    box-shadow: 0 30px 80px rgba(212, 175, 55, 0.18);
 }
 
-.banner-slides {
-    position: absolute;
-    inset: 0;
+.banner-slide img,
+.banner-empty {
+    -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 46%, #000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 100%);
+    mask-image: radial-gradient(ellipse 62% 62% at 50% 46%, #000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 100%);
 }
 
 .banner-slide {
@@ -2091,9 +2089,9 @@ footer p {
     inset: 0;
     margin: 0;
     opacity: 0;
-    filter: blur(12px);
-    transform: scale(1.04);
-    transition: opacity 1s ease, filter 1s ease, transform 6s ease;
+    filter: blur(14px);
+    transform: scale(1.05);
+    transition: opacity 1.4s ease, filter 1.4s ease, transform 7s ease;
     pointer-events: none;
 }
 
@@ -2104,6 +2102,14 @@ footer p {
     pointer-events: auto;
 }
 
+.banner-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
 .banner-slide img {
     width: 100%;
     height: 100%;
@@ -2111,110 +2117,25 @@ footer p {
     display: block;
 }
 
+/* Solo el nombre del perfume, sobre una sombra suave */
 .banner-caption {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
-    padding: 70px 28px 46px;
-    background: linear-gradient(0deg, rgba(8, 8, 8, 0.92) 0%, rgba(8, 8, 8, 0.6) 55%, transparent 100%);
-    text-align: left;
-}
-
-.banner-caption h3 {
-    font-size: 26px;
-    margin-bottom: 6px;
+    bottom: 6%;
+    padding: 0 16%;
+    text-align: center;
     color: #f4f0e8;
-}
-
-.banner-caption p {
-    color: #c9c2b0;
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 16px;
-}
-
-.banner-button {
-    display: inline-block;
-    padding: 10px 22px;
-    border: 1px solid #d4af37;
-    color: #d4af37;
-    font-size: 12px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-.banner-button:hover {
-    background: #d4af37;
-    color: #111;
-}
-
-.banner-dots {
-    position: absolute;
-    right: 22px;
-    bottom: 20px;
-    display: flex;
-    gap: 8px;
-    z-index: 2;
-}
-
-.banner-dot {
-    width: 9px;
-    height: 9px;
-    padding: 0;
-    border-radius: 50%;
-    border: 1px solid #d4af37;
-    background: transparent;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.banner-dot.is-active {
-    background: #d4af37;
-    transform: scale(1.2);
-}
-
-.banner-progress {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2px;
-    background: rgba(212, 175, 55, 0.15);
-    z-index: 2;
-}
-
-.banner-progress span {
-    display: block;
-    height: 100%;
-    width: 100%;
-    background: #d4af37;
-    transform-origin: left;
-    transform: scaleX(0);
-}
-
-.banner-progress span.is-running {
-    animation: banner-avanza linear forwards;
-}
-
-/* Se pausa mientras el cursor está encima */
-.banner-carousel:hover .banner-progress span {
-    animation-play-state: paused;
-}
-
-@keyframes banner-avanza {
-    from { transform: scaleX(0); }
-    to   { transform: scaleX(1); }
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 0, 0, 0.7);
 }
 
 .banner-empty {
     display: grid;
     place-items: center;
-    background:
-        radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.15), transparent 60%),
-        #0e0e0e;
+    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.18), transparent 60%);
 }
 
 .banner-empty img {
@@ -2228,7 +2149,7 @@ footer p {
 
 @media (max-width: 1100px) {
     .hero-image {
-        width: 360px;
+        width: 380px;
     }
 }
 

@@ -82,8 +82,8 @@ class BannerAdmin(admin.ModelAdmin):
     autocomplete_fields = ('producto',)
     readonly_fields = ('vista_previa',)
     fields = (
-        'titulo', 'subtitulo', 'imagen', 'vista_previa',
-        'texto_boton', 'producto', 'enlace', 'orden', 'activo',
+        'titulo', 'imagen', 'vista_previa',
+        'producto', 'enlace', 'orden', 'activo',
     )
 
     @admin.display(description='Imagen')

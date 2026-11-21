@@ -21,9 +21,7 @@ def crear_banner_sauvage(apps, schema_editor):
 
     Banner.objects.create(
         titulo='Dior Sauvage',
-        subtitulo='Fresco, amaderado y magnético. Disponible en Perfumundo.',
         imagen=producto.imagen.name,  # reutiliza la misma foto del producto
-        texto_boton='Ver perfume',
         producto=producto,
         orden=0,
         activo=True,

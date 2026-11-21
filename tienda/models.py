@@ -179,23 +179,21 @@ class ImagenProducto(models.Model):
 class Banner(models.Model):
     """Imagen del carrusel de la portada (lado derecho de la presentación)."""
 
-    titulo = models.CharField('título', max_length=80)
-    subtitulo = models.CharField(
-        'texto corto', max_length=140, blank=True,
-        help_text='Opcional. Ej.: "Hasta 20% de descuento esta semana".'
+    titulo = models.CharField(
+        'nombre del perfume', max_length=80,
+        help_text='Es el único texto que se muestra sobre la imagen.'
     )
     imagen = models.ImageField(
         upload_to='banners/',
         help_text='Recomendado: vertical 1080 × 1350 px (proporción 4:5), JPG o PNG.'
     )
-    texto_boton = models.CharField('texto del botón', max_length=30, default='Ver más')
     producto = models.ForeignKey(
         Producto,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='banners',
-        help_text='Opcional. Si eliges un perfume, el botón lleva a su página.'
+        help_text='Opcional. Si eliges un perfume, al dar clic en el banner se abre su página.'
     )
     enlace = models.CharField(
         'enlace', max_length=300, blank=True,
