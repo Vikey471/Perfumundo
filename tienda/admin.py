@@ -28,15 +28,17 @@ class ProductoAdmin(admin.ModelAdmin):
         'precio',
         'stock',
         'destacado',
+        'liquidacion',
         'activo',
     )
-    list_editable = ('precio', 'stock', 'destacado', 'activo')
+    list_editable = ('precio', 'stock', 'destacado', 'liquidacion', 'activo')
     list_filter = (
         'marca__categoria',
         'genero',
         'concentracion',
         'marca',
         'destacado',
+        'liquidacion',
         'activo',
     )
     list_select_related = ('marca',)
@@ -61,5 +63,8 @@ class ProductoAdmin(admin.ModelAdmin):
         }),
         ('Venta', {
             'fields': ('precio', 'stock', 'destacado', 'activo'),
+        }),
+        ('Liquidación y parciales', {
+            'fields': ('liquidacion', 'detalle_liquidacion'),
         }),
     )

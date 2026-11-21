@@ -48,6 +48,13 @@
                     {{ producto.nombre }}
                 </h1>
 
+                {% if producto.liquidacion %}
+                    <p class="liquidation-note">
+                        <a href="{% url 'catalogo' %}?categoria=liquidacion">Liquidación y parciales</a>
+                        {% if producto.detalle_liquidacion %} · {{ producto.detalle_liquidacion }}{% endif %}
+                    </p>
+                {% endif %}
+
                 {% precio_producto producto "product-detail-price" %}
 
                 <p class="product-description">

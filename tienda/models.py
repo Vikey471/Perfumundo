@@ -48,6 +48,13 @@ class Marca(models.Model):
         super().save(*args, **kwargs)
 
 
+# Secciones del catálogo: las 3 categorías de marca + liquidación.
+LIQUIDACION = 'liquidacion'
+SECCIONES = Marca.Categoria.choices + [(LIQUIDACION, 'Liquidación y parciales')]
+# En el menú superior se usa una etiqueta corta para que quepa en una línea.
+SECCIONES_MENU = Marca.Categoria.choices + [(LIQUIDACION, 'Liquidación')]
+
+
 class Producto(models.Model):
 
     class Genero(models.TextChoices):
@@ -102,6 +109,18 @@ class Producto(models.Model):
         upload_to='productos/',
         blank=True,
         null=True
+    )
+
+    liquidacion = models.BooleanField(
+        'liquidación / parcial',
+        default=False,
+        help_text='Márcalo para que aparezca en la sección "Liquidación y parciales".'
+    )
+    detalle_liquidacion = models.CharField(
+        'detalle de liquidación',
+        max_length=120,
+        blank=True,
+        help_text='Opcional. Ej.: "Parcial 70/100 ml", "Sin caja", "Última pieza".'
     )
 
     destacado = models.BooleanField(default=False)

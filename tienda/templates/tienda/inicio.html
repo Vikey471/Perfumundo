@@ -39,6 +39,90 @@
     </section>
 
 
+    <!-- PRODUCTOS DESTACADOS -->
+    <section class="featured">
+
+        <div class="section-heading">
+
+            <p>
+                SELECCIÓN PERFUMUNDO
+            </p>
+
+            <h2>
+                Productos destacados
+            </h2>
+
+        </div>
+
+
+        <div class="products-grid">
+
+{% for producto in productos %}
+
+    <article class="product-card">
+
+        <a href="{{ producto.get_absolute_url }}" class="product-link">
+
+    <div class="product-image">
+
+        {% if producto.liquidacion %}
+            <span class="liquidation-badge">{{ producto.detalle_liquidacion|default:"Liquidación" }}</span>
+        {% endif %}
+
+        {% if producto.imagen %}
+            <img
+                src="{{ producto.imagen.url }}"
+                alt="{{ producto.nombre }}"
+            >
+        {% else %}
+            PERFUME
+        {% endif %}
+
+    </div>
+
+</a>
+
+        <div class="product-info">
+
+            <a href="{{ producto.get_absolute_url }}" class="product-link">
+
+                <p class="product-brand">
+                    {{ producto.marca }}
+                </p>
+
+                <h3>
+                    {{ producto.nombre }}
+                </h3>
+
+                <p class="product-meta">
+                    {{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml
+                </p>
+
+                {% precio_producto producto %}
+
+            </a>
+
+            <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
+
+    {% csrf_token %}
+
+    <button type="submit">
+        Agregar al carrito
+    </button>
+
+</form>
+
+        </div>
+
+    </article>
+
+{% endfor %}
+
+        </div>
+
+    </section>
+
+
     <!-- CINTA DE PROMOCIONES -->
     {% include "tienda/_cinta_promociones.html" %}
 
@@ -105,85 +189,20 @@
 
             </a>
 
-        </div>
 
-    </section>
+            <a href="{% url 'catalogo' %}?categoria=liquidacion" class="category-card category-card-liquidacion">
 
-
-    <!-- PRODUCTOS DESTACADOS -->
-    <section class="featured">
-
-        <div class="section-heading">
-
-            <p>
-                SELECCIÓN PERFUMUNDO
-            </p>
-
-            <h2>
-                Productos destacados
-            </h2>
-
-        </div>
-
-
-        <div class="products-grid">
-
-{% for producto in productos %}
-
-    <article class="product-card">
-
-        <a href="{{ producto.get_absolute_url }}" class="product-link">
-
-    <div class="product-image">
-
-        {% if producto.imagen %}
-            <img
-                src="{{ producto.imagen.url }}"
-                alt="{{ producto.nombre }}"
-            >
-        {% else %}
-            PERFUME
-        {% endif %}
-
-    </div>
-
-</a>
-
-        <div class="product-info">
-
-            <a href="{{ producto.get_absolute_url }}" class="product-link">
-
-                <p class="product-brand">
-                    {{ producto.marca }}
-                </p>
+                <span>04</span>
 
                 <h3>
-                    {{ producto.nombre }}
+                    Liquidación y parciales
                 </h3>
 
-                <p class="product-meta">
-                    {{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml
+                <p>
+                    Últimas piezas y frascos parciales a precio especial.
                 </p>
 
-                {% precio_producto producto %}
-
             </a>
-
-            <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
-
-    {% csrf_token %}
-
-    <button type="submit">
-        Agregar al carrito
-    </button>
-
-</form>
-
-        </div>
-
-    </article>
-
-{% endfor %}
 
         </div>
 

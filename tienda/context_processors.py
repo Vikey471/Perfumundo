@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from .carrito import CLAVE_SESION
-from .models import Marca
+from .models import SECCIONES_MENU
 from .precios import porcentaje_descuento
 
 
@@ -25,7 +25,7 @@ def tienda(request):
     carrito = request.session.get(CLAVE_SESION, {})
 
     return {
-        'categorias_menu': Marca.Categoria.choices,
+        'categorias_menu': SECCIONES_MENU,
         'carrito_cantidad': sum(carrito.values()),
         'descuento_cliente': porcentaje_descuento(request.user),
         'version_estaticos': _version_estaticos(),

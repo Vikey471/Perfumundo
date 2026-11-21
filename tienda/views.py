@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from .carrito import Carrito
-from .models import Marca, Producto
+from .models import LIQUIDACION, SECCIONES, Marca, Producto
 
 
 def inicio(request):
@@ -29,7 +29,10 @@ def catalogo(request):
     productos = Producto.objects.filter(activo=True).select_related('marca')
     marcas = Marca.objects.filter(productos__activo=True).distinct()
 
-    if categoria in Marca.Categoria.values:
+    if categoria == LIQUIDACION:
+        productos = productos.filter(liquidacion=True)
+        marcas = marcas.filter(productos__liquidacion=True)
+    elif categoria in Marca.Categoria.values:
         productos = productos.filter(marca__categoria=categoria)
         marcas = marcas.filter(categoria=categoria)
     else:
@@ -60,7 +63,7 @@ def catalogo(request):
         'marca_actual': marca,
         'genero_actual': genero,
         'concentracion_actual': concentracion,
-        'categorias': Marca.Categoria.choices,
+        'categorias': SECCIONES,
         'marcas': marcas,
         'generos': Producto.Genero.choices,
         'concentraciones': Producto.Concentracion.choices,
