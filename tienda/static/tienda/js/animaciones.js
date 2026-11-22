@@ -32,7 +32,9 @@
         '.account-status',
         '.order-summary',
         '.order-card',
-        '.contact-card'
+        '.contact-card',
+        '.visit-info',
+        '.visit-map'
     ];
 
     const elementos = document.querySelectorAll(SELECTORES.join(','));

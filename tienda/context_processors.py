@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from . import negocio
 from .carrito import CLAVE_SESION
 from .models import SECCIONES_MENU
 from .precios import porcentaje_descuento
@@ -29,4 +30,5 @@ def tienda(request):
         'carrito_cantidad': sum(carrito.values()),
         'descuento_cliente': porcentaje_descuento(request.user),
         'version_estaticos': _version_estaticos(),
+        'negocio': negocio.contexto(),
     }

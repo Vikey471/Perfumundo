@@ -1,24 +1,76 @@
 {% load static %}
-<!-- CONTACTO Y REDES SOCIALES -->
+<!-- VISÍTANOS: UBICACIÓN, HORARIO Y REDES SOCIALES -->
 <section class="contact-section" id="contacto">
 
     <div class="section-heading contact-heading">
-        <p>PERFUMUNDO LM</p>
-        <h2>Ponte en contacto con nosotros</h2>
-        <span class="contact-subtitle">Escríbenos por cualquiera de nuestras redes, con gusto te asesoramos.</span>
+        <p>{{ negocio.nombre|upper }}</p>
+        <h2>Visítanos</h2>
+        <span class="contact-subtitle">Te esperamos en nuestra tienda o escríbenos, con gusto te asesoramos.</span>
     </div>
+
+    <div class="visit-grid">
+
+        <!-- Columna izquierda: dirección, horario y botones -->
+        <div class="visit-info">
+
+            <div class="visit-block">
+                <h3>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                    Dirección
+                </h3>
+                <address>
+                    {{ negocio.calle }}<br>
+                    {{ negocio.colonia }}<br>
+                    {{ negocio.ciudad }}
+                </address>
+            </div>
+
+            <div class="visit-block">
+                <h3>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                    Horario
+                </h3>
+                <ul class="visit-hours">
+                    {% for dias, horas in negocio.horario %}
+                        <li><span>{{ dias }}</span><span>{{ horas }}</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="visit-buttons">
+                <a href="{{ negocio.maps_url }}" class="visit-button visit-button-primary"
+                   target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+                <a href="{{ negocio.waze_url }}" class="visit-button"
+                   target="_blank" rel="noopener noreferrer">Abrir en Waze</a>
+            </div>
+
+        </div>
+
+        <!-- Columna derecha: mapa -->
+        <div class="visit-map">
+            <iframe
+                src="{{ negocio.maps_embed_url }}"
+                title="Mapa: {{ negocio.nombre }}, {{ negocio.direccion }}"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen></iframe>
+        </div>
+
+    </div>
+
+    <h3 class="contact-networks-title">Ponte en contacto con nosotros</h3>
 
     <div class="contact-grid">
 
-        <a href="https://wa.me/526681303333" class="contact-card contact-whatsapp"
+        <a href="https://wa.me/{{ negocio.whatsapp }}" class="contact-card contact-whatsapp"
            target="_blank" rel="noopener noreferrer">
             <img src="{% static 'tienda/img/redes/whatsapp.png' %}" alt="WhatsApp" width="64" height="64">
             <span class="contact-network">WhatsApp</span>
-            <span class="contact-handle">668 130 3333</span>
+            <span class="contact-handle">{{ negocio.whatsapp_visible }}</span>
             <span class="contact-action">Enviar mensaje</span>
         </a>
 
-        <a href="https://www.instagram.com/perfumundolm" class="contact-card contact-instagram"
+        <a href="{{ negocio.instagram_url }}" class="contact-card contact-instagram"
            target="_blank" rel="noopener noreferrer">
             <img src="{% static 'tienda/img/redes/instagram.png' %}" alt="Instagram" width="64" height="64">
             <span class="contact-network">Instagram</span>
@@ -26,11 +78,11 @@
             <span class="contact-action">Ver perfil</span>
         </a>
 
-        <a href="https://www.facebook.com/share/1Kw95ZjjS5/" class="contact-card contact-facebook"
+        <a href="{{ negocio.facebook_url }}" class="contact-card contact-facebook"
            target="_blank" rel="noopener noreferrer">
             <img src="{% static 'tienda/img/redes/facebook.png' %}" alt="Facebook" width="64" height="64">
             <span class="contact-network">Facebook</span>
-            <span class="contact-handle">Perfumundo LM</span>
+            <span class="contact-handle">{{ negocio.nombre }}</span>
             <span class="contact-action">Visitar página</span>
         </a>
 
