@@ -2366,3 +2366,133 @@ footer p {
         font-size: 22px;
     }
 }
+
+/* =========================
+   VITRINA ILUMINADA (CARRUSEL DE LA PORTADA)
+========================= */
+
+.hero-showcase {
+    display: block;
+    position: relative;
+    isolation: isolate;
+    padding-bottom: 70px;   /* espacio para el pedestal y el reflejo */
+}
+
+/* 2. Halo: reflector dorado detrás de la imagen */
+.showcase-halo {
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 42%;
+    width: 120%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.28) 0%, rgba(212, 175, 55, 0.10) 35%, transparent 65%);
+    filter: blur(10px);
+    animation: vitrina-respira 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* 3. Flotado suave del banner + 1. reflejo en el "piso" */
+.showcase-float {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    animation: vitrina-flota 7s ease-in-out infinite;
+}
+
+/* Línea de "repisa" con brillo, donde se apoya la luz */
+.hero-showcase::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(243, 215, 124, 0.8), transparent);
+    box-shadow: 0 0 12px rgba(243, 215, 124, 0.6);
+    z-index: 0;
+}
+
+/* 1. Pedestal: óvalo de luz dorada bajo el perfume */
+.showcase-pedestal {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    bottom: 38px;
+    width: 78%;
+    height: 46px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background:
+        radial-gradient(ellipse at center, rgba(255, 226, 140, 0.85) 0%, rgba(212, 175, 55, 0.55) 30%, rgba(212, 175, 55, 0.15) 60%, transparent 75%);
+    filter: blur(6px);
+    animation: vitrina-respira 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* Haz de luz que sube desde el pedestal */
+.showcase-beam {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    width: 70%;
+    height: 340px;
+    transform: translateX(-50%);
+    background: linear-gradient(0deg, rgba(212, 175, 55, 0.22) 0%, rgba(212, 175, 55, 0.06) 45%, transparent 100%);
+    clip-path: polygon(30% 100%, 70% 100%, 100% 0, 0 0);
+    filter: blur(12px);
+}
+
+/* 4. Polvo dorado que sube lentamente */
+.showcase-particles {
+    position: absolute;
+    inset: 0 0 40px 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.showcase-particles span {
+    position: absolute;
+    left: var(--x);
+    bottom: 8%;
+    width: var(--s);
+    height: var(--s);
+    border-radius: 50%;
+    background: #f3d77c;
+    box-shadow: 0 0 8px 2px rgba(243, 215, 124, 0.7);
+    opacity: 0;
+    animation: polvo-sube var(--t) linear var(--d) infinite;
+}
+
+@keyframes vitrina-flota {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+@keyframes vitrina-respira {
+    0%, 100% { opacity: 0.75; }
+    50%      { opacity: 1; }
+}
+
+@keyframes polvo-sube {
+    0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
+    15%  { opacity: 0.9; }
+    50%  { transform: translate(12px, -45vh) scale(1); }
+    85%  { opacity: 0.5; }
+    100% { transform: translate(-8px, -80vh) scale(0.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .showcase-float,
+    .showcase-halo,
+    .showcase-pedestal {
+        animation: none;
+    }
+
+    .showcase-particles {
+        display: none;
+    }
+}

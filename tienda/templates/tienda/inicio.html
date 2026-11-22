@@ -28,8 +28,34 @@
 
         </div>
 
-        <div class="hero-image">
-            {% include "tienda/_carrusel_banners.html" %}
+        <div class="hero-image hero-showcase">
+
+            <!-- Vitrina: halo, pedestal de luz, reflejo y polvo dorado -->
+            <div class="showcase-halo" aria-hidden="true"></div>
+
+            <div class="showcase-float">
+                {% include "tienda/_carrusel_banners.html" %}
+            </div>
+
+            <div class="showcase-pedestal" aria-hidden="true">
+                <span class="showcase-beam"></span>
+            </div>
+
+            <div class="showcase-particles" aria-hidden="true">
+                <span style="--x:12%; --d:0s; --t:9s; --s:3px"></span>
+                <span style="--x:22%; --d:3.5s; --t:11s; --s:2px"></span>
+                <span style="--x:30%; --d:1.2s; --t:8s; --s:4px"></span>
+                <span style="--x:38%; --d:6s; --t:12s; --s:2px"></span>
+                <span style="--x:46%; --d:2.4s; --t:10s; --s:3px"></span>
+                <span style="--x:54%; --d:7.5s; --t:9s; --s:2px"></span>
+                <span style="--x:62%; --d:0.8s; --t:11s; --s:3px"></span>
+                <span style="--x:70%; --d:4.8s; --t:8s; --s:2px"></span>
+                <span style="--x:78%; --d:2s; --t:12s; --s:4px"></span>
+                <span style="--x:86%; --d:5.6s; --t:10s; --s:2px"></span>
+                <span style="--x:18%; --d:8.2s; --t:13s; --s:2px"></span>
+                <span style="--x:66%; --d:9s; --t:12s; --s:3px"></span>
+            </div>
+
         </div>
 
     </section>
