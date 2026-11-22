@@ -5,6 +5,7 @@
  *  2. Promociones: fila horizontal que se recorre con flechas.
  *  3. Contador del carrito: da un pequeño salto cuando aumenta.
  *  4. Carrusel de banners de la portada (cambia solo con difuminado).
+ *  5. Menú para celular (botón de tres rayas).
  */
 (function () {
     'use strict';
@@ -140,4 +141,46 @@
             if (enlace) { enlace.tabIndex = 0; }
         }, intervalo);
     });
+    /* ---------- 5. Menú para celular ---------- */
+
+    (function () {
+        const menu = document.getElementById('menu-movil');
+        const fondo = document.querySelector('.mobile-overlay');
+        const abrir = document.querySelector('[data-menu-open]');
+        if (!menu || !fondo || !abrir) { return; }
+
+        function abrirMenu() {
+            fondo.hidden = false;
+            // Espera un cuadro para que la transición se vea.
+            requestAnimationFrame(function () {
+                document.documentElement.classList.add('menu-abierto');
+            });
+            menu.setAttribute('aria-hidden', 'false');
+            abrir.setAttribute('aria-expanded', 'true');
+        }
+
+        function cerrarMenu() {
+            document.documentElement.classList.remove('menu-abierto');
+            menu.setAttribute('aria-hidden', 'true');
+            abrir.setAttribute('aria-expanded', 'false');
+            setTimeout(function () { fondo.hidden = true; }, 300);
+        }
+
+        abrir.addEventListener('click', abrirMenu);
+        document.querySelectorAll('[data-menu-close]').forEach(function (el) {
+            el.addEventListener('click', cerrarMenu);
+        });
+        menu.querySelectorAll('a').forEach(function (enlace) {
+            enlace.addEventListener('click', cerrarMenu);
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && document.documentElement.classList.contains('menu-abierto')) {
+                cerrarMenu();
+            }
+        });
+        // Si la pantalla se agranda (girar el teléfono o tablet), se cierra.
+        window.matchMedia('(min-width: 901px)').addEventListener('change', function (m) {
+            if (m.matches) { cerrarMenu(); }
+        });
+    })();
 })();
