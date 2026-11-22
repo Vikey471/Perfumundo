@@ -1,0 +1,174 @@
+{% extends "tienda/base.html" %}
+{% load precios %}
+
+{% block title %}Catálogo | Perfumundo{% endblock %}
+
+{% block content %}
+
+    <section class="featured">
+
+        <div class="section-heading">
+
+            <p>
+                PERFUMUNDO
+            </p>
+
+            <h2>
+                Nuestro catálogo
+            </h2>
+
+        </div>
+
+
+        <!-- CATEGORÍAS PRINCIPALES -->
+    <div class="category-filters">
+
+        <a href="{% querystring categoria=None marca=None %}"
+           class="{% if not categoria_actual %}active{% endif %}">
+            Todos
+        </a>
+
+        {% for valor, etiqueta in categorias %}
+            <a href="{% querystring categoria=valor marca=None %}"
+               class="{% if categoria_actual == valor %}active{% endif %}">
+                {{ etiqueta }}
+            </a>
+        {% endfor %}
+
+    </div>
+
+    <!-- GÉNERO -->
+    <div class="category-filters gender-filters">
+
+        <a href="{% querystring genero=None %}"
+           class="{% if not genero_actual %}active{% endif %}">
+            Todos los géneros
+        </a>
+
+        {% for valor, etiqueta in generos %}
+            <a href="{% querystring genero=valor %}"
+               class="{% if genero_actual == valor %}active{% endif %}">
+                {{ etiqueta }}
+            </a>
+        {% endfor %}
+
+    </div>
+
+    <!-- SUBCATEGORÍA (CASA / DISEÑADOR / MARCA) Y CONCENTRACIÓN -->
+    <form method="GET" action="{% url 'catalogo' %}" class="catalog-filter-form">
+
+        {% if categoria_actual %}
+            <input type="hidden" name="categoria" value="{{ categoria_actual }}">
+        {% endif %}
+        {% if genero_actual %}
+            <input type="hidden" name="genero" value="{{ genero_actual }}">
+        {% endif %}
+        {% if busqueda %}
+            <input type="hidden" name="q" value="{{ busqueda }}">
+        {% endif %}
+
+        <select name="marca" onchange="this.form.submit()">
+            <option value="">
+                {% if categoria_actual == 'arabe' %}Todas las casas árabes{% elif categoria_actual == 'disenador' %}Todos los diseñadores{% elif categoria_actual == 'nicho' %}Todas las marcas nicho{% elif categoria_actual == 'liquidacion' %}Todas las marcas en liquidación{% else %}Todas las marcas{% endif %}
+            </option>
+            {% for marca in marcas %}
+                <option value="{{ marca.slug }}" {% if marca_actual == marca.slug %}selected{% endif %}>
+                    {{ marca.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="concentracion" onchange="this.form.submit()">
+            <option value="">Todas las concentraciones</option>
+            {% for valor, etiqueta in concentraciones %}
+                <option value="{{ valor }}" {% if concentracion_actual == valor %}selected{% endif %}>
+                    {{ etiqueta }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <noscript><button type="submit">Filtrar</button></noscript>
+
+    </form>
+
+    {% if busqueda %}
+        <p class="catalog-search-info">
+            Resultados para "{{ busqueda }}" ·
+            <a href="{% querystring q=None %}">quitar búsqueda</a>
+        </p>
+    {% endif %}
+
+<div class="products-grid">
+
+{% for producto in productos %}
+
+    <!-- PRODUCTOS -->
+
+    <article class="product-card">
+
+        <a href="{{ producto.get_absolute_url }}" class="product-link">
+
+            <div class="product-image">
+
+                {% if producto.liquidacion %}
+                    <span class="liquidation-badge">{{ producto.detalle_liquidacion|default:"Liquidación" }}</span>
+                {% endif %}
+
+                {% if producto.imagen %}
+                    <img
+                        src="{{ producto.imagen.url }}"
+                        alt="{{ producto.nombre }}"
+                    >
+                {% else %}
+                    PERFUME
+                {% endif %}
+
+            </div>
+
+        </a>
+
+        <div class="product-info">
+
+            <a href="{{ producto.get_absolute_url }}" class="product-link">
+
+                <p class="product-brand">
+                    {{ producto.marca }}
+                </p>
+
+                <h3>
+                    {{ producto.nombre }}
+                </h3>
+
+                <p class="product-meta">
+                    {{ producto.get_concentracion_display }} · {{ producto.volumen_ml }} ml
+                </p>
+
+                {% precio_producto producto %}
+
+            </a>
+
+            <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
+
+    {% csrf_token %}
+
+    <button type="submit">
+        Agregar al carrito
+    </button>
+
+</form>
+
+        </div>
+
+    </article>
+
+{% empty %}
+
+    <p class="catalog-empty">No encontramos perfumes con esos filtros.</p>
+
+{% endfor %}
+
+        </div>
+
+    </section>
+
+{% endblock %}

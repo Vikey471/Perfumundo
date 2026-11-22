@@ -1,0 +1,179 @@
+{% extends "tienda/base.html" %}
+
+{% block title %}Carrito | Perfumundo{% endblock %}
+
+{% block content %}
+
+<section class="featured">
+
+    <div class="section-heading">
+
+        <p>
+            PERFUMUNDO
+        </p>
+
+        <h2>
+            Tu carrito
+        </h2>
+
+    </div>
+
+
+    {% if productos_carrito %}
+
+        {% for item in productos_carrito %}
+
+            <div class="cart-item" id="cart-item-{{ item.producto.id }}">
+
+                <div class="cart-item-image">
+
+                    {% if item.producto.imagen %}
+
+                        <img
+                            src="{{ item.producto.imagen.url }}"
+                            alt="{{ item.producto.nombre }}"
+                        >
+
+                    {% else %}
+
+                        PERFUME
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="cart-item-info">
+
+                    <p class="product-brand">
+                        {{ item.producto.marca }}
+                    </p>
+
+                    <h3>
+                        {{ item.producto.nombre }}
+                    </h3>
+
+                    <p>
+                        Precio:
+                        {% if item.precio_unitario != item.precio_lista %}
+                            <span class="price-old">${{ item.precio_lista }}</span>
+                        {% endif %}
+                        ${{ item.precio_unitario }} MXN
+                    </p>
+
+
+                    <!-- CANTIDAD -->
+
+                    <div class="quantity-control">
+
+                        <form
+                            action="{% url 'actualizar_carrito' item.producto.id %}"
+                            method="POST"
+                            class="quantity-form"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                name="cantidad"
+                                value="{{ item.cantidad|add:'-1' }}"
+                            >
+                                −
+                            </button>
+
+                            <span class="quantity">
+                                {{ item.cantidad }}
+                            </span>
+
+                            <button
+                                type="submit"
+                                name="cantidad"
+                                value="{{ item.cantidad|add:'1' }}"
+                            >
+                                +
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- SUBTOTAL -->
+
+                    <p class="cart-subtotal">
+
+                        Subtotal:
+                        ${{ item.subtotal }} MXN
+
+                    </p>
+
+
+                    <!-- ELIMINAR -->
+
+                    <form
+                        action="{% url 'actualizar_carrito' item.producto.id %}"
+                        method="POST"
+                        class="remove-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            name="cantidad"
+                            value="0"
+                            class="remove-cart-button"
+                        >
+                            Eliminar
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+
+            <!-- TOTAL DEL CARRITO -->
+
+            <div class="cart-total">
+
+                {% if totales.descuento %}
+                    <p class="cart-total-line">
+                        Subtotal <span>${{ totales.subtotal }} MXN</span>
+                    </p>
+                    <p class="cart-total-line cart-discount">
+                        Descuento mayorista ({{ descuento_cliente|floatformat:"0" }}%)
+                        <span>−${{ totales.descuento }} MXN</span>
+                    </p>
+                {% endif %}
+
+                <p>
+                    Total
+                </p>
+
+                <h3>
+                    ${{ totales.total }} MXN
+                </h3>
+
+                <a href="{% url 'checkout' %}" class="add-cart-button checkout-button">
+                    Finalizar compra
+                </a>
+
+            </div>
+
+
+    {% else %}
+
+        <p>
+            Tu carrito está vacío.
+        </p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

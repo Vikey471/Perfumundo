@@ -1,0 +1,99 @@
+{% extends "tienda/base.html" %}
+{% load precios %}
+
+{% block title %}{{ producto.nombre }} | Perfumundo{% endblock %}
+
+{% block content %}
+
+        <section class="product-detail">
+
+            <div class="product-detail-image">
+
+                {% if producto.imagen %}
+
+                    <img
+                        src="{{ producto.imagen.url }}"
+                        alt="{{ producto.nombre }}"
+                    >
+
+                {% else %}
+
+                    PERFUME
+
+                {% endif %}
+
+                {% if producto.imagenes.all %}
+                    <div class="product-gallery">
+                        {% for foto in producto.imagenes.all %}
+                            <img
+                                src="{{ foto.imagen.url }}"
+                                alt="{{ foto.texto_alternativo|default:producto.nombre }}"
+                            >
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="product-detail-info">
+
+                <p class="product-brand">
+                    <a href="{% url 'catalogo' %}?categoria={{ producto.marca.categoria }}">{{ producto.marca.get_categoria_display }}</a>
+                    ·
+                    <a href="{% url 'catalogo' %}?categoria={{ producto.marca.categoria }}&marca={{ producto.marca.slug }}">{{ producto.marca.nombre }}</a>
+                </p>
+
+                <h1>
+                    {{ producto.nombre }}
+                </h1>
+
+                {% if producto.liquidacion %}
+                    <p class="liquidation-note">
+                        <a href="{% url 'catalogo' %}?categoria=liquidacion">Liquidación y parciales</a>
+                        {% if producto.detalle_liquidacion %} · {{ producto.detalle_liquidacion }}{% endif %}
+                    </p>
+                {% endif %}
+
+                {% precio_producto producto "product-detail-price" %}
+
+                <p class="product-description">
+                    {{ producto.descripcion|linebreaksbr }}
+                </p>
+
+                {% if producto.url_fragrantica %}
+                    <p class="product-reference">
+                        <a href="{{ producto.url_fragrantica }}" target="_blank" rel="noopener noreferrer">
+                            Ver ficha completa en Fragrantica ↗
+                        </a>
+                    </p>
+                {% endif %}
+
+                <ul class="product-specs">
+                    <li><strong>Concentración:</strong> {{ producto.get_concentracion_display }}</li>
+                    <li><strong>Contenido:</strong> {{ producto.volumen_ml }} ml</li>
+                    <li><strong>Género:</strong> {{ producto.get_genero_display }}</li>
+                    {% if producto.marca.pais_origen %}
+                        <li><strong>Origen:</strong> {{ producto.marca.pais_origen }}</li>
+                    {% endif %}
+                    <li><strong>Disponibles:</strong> {{ producto.stock }}</li>
+                </ul>
+
+                {% if producto.stock > 0 %}
+                    <form action="{% url 'agregar_carrito' producto.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="add-cart-button">
+                            Agregar al carrito
+                        </button>
+                    </form>
+                {% else %}
+                    <button class="add-cart-button" disabled>
+                        Agotado
+                    </button>
+                {% endif %}
+
+            </div>
+
+        </section>
+
+{% endblock %}

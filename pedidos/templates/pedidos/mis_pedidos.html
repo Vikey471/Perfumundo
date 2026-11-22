@@ -1,0 +1,37 @@
+{% extends "tienda/base.html" %}
+
+{% block title %}Mis pedidos | Perfumundo{% endblock %}
+
+{% block content %}
+
+<section class="account-page">
+
+    <div class="section-heading">
+        <p>PERFUMUNDO</p>
+        <h2>Mis pedidos</h2>
+    </div>
+
+    {% for pedido in pedidos %}
+        <a href="{{ pedido.get_absolute_url }}" class="order-card">
+            <div>
+                <strong>{{ pedido.folio }}</strong>
+                <small>{{ pedido.creado|date:"d \d\e F \d\e Y, H:i" }}</small>
+            </div>
+            <div>
+                <span class="order-status order-status-{{ pedido.estado }}">{{ pedido.get_estado_display }}</span>
+            </div>
+            <div class="order-card-total">
+                ${{ pedido.total }} MXN
+                <small>{{ pedido.items.all|length }} producto{{ pedido.items.all|length|pluralize }}</small>
+            </div>
+        </a>
+    {% empty %}
+        <p class="catalog-empty">Aún no tienes pedidos.</p>
+        <a href="{% url 'catalogo' %}" class="add-cart-button checkout-button">Ver catálogo</a>
+    {% endfor %}
+
+    <p class="account-switch"><a href="{% url 'mi_cuenta' %}">← Mi cuenta</a></p>
+
+</section>
+
+{% endblock %}

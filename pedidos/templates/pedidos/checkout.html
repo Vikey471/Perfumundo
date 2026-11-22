@@ -1,0 +1,85 @@
+{% extends "tienda/base.html" %}
+
+{% block title %}Finalizar compra | Perfumundo{% endblock %}
+
+{% block content %}
+
+<section class="checkout-page">
+
+    <div class="section-heading">
+        <p>PERFUMUNDO</p>
+        <h2>Finalizar compra</h2>
+    </div>
+
+    <div class="checkout-grid">
+
+        <form method="POST" class="account-form" novalidate>
+            {% csrf_token %}
+
+            <h3>Datos de envío</h3>
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="field">{{ form.nombre.as_field_group }}</div>
+            <div class="field">{{ form.telefono.as_field_group }}</div>
+            <div class="field">{{ form.calle.as_field_group }}</div>
+            <div class="field">{{ form.colonia.as_field_group }}</div>
+            <div class="form-row">
+                <div class="field">{{ form.ciudad.as_field_group }}</div>
+                <div class="field">{{ form.estado_envio.as_field_group }}</div>
+            </div>
+            <div class="field">{{ form.codigo_postal.as_field_group }}</div>
+            <div class="field">{{ form.notas.as_field_group }}</div>
+
+            <label class="checkbox-line">
+                {{ form.guardar_en_perfil }} {{ form.guardar_en_perfil.label }}
+            </label>
+
+            <button type="submit" class="add-cart-button">
+                Confirmar pedido · ${{ totales.total }} MXN
+            </button>
+
+            <p class="checkout-note">
+                Al confirmar, apartamos las piezas para ti. Te contactaremos para
+                acordar el pago y el envío.
+            </p>
+        </form>
+
+        <aside class="order-summary">
+            <h3>Tu pedido</h3>
+
+            {% for linea in lineas %}
+                <div class="order-summary-line">
+                    <span>{{ linea.cantidad }} × {{ linea.producto.marca.nombre }} {{ linea.producto.nombre }}
+                        <small>{{ linea.producto.get_concentracion_display }} · {{ linea.producto.volumen_ml }} ml</small>
+                    </span>
+                    <span>${{ linea.subtotal }}</span>
+                </div>
+            {% endfor %}
+
+            {% if totales.descuento %}
+                <div class="order-summary-line muted">
+                    <span>Subtotal</span><span>${{ totales.subtotal }}</span>
+                </div>
+                <div class="order-summary-line cart-discount">
+                    <span>Descuento mayorista ({{ descuento_cliente|floatformat:"0" }}%)</span>
+                    <span>−${{ totales.descuento }}</span>
+                </div>
+            {% endif %}
+
+            <div class="order-summary-line order-summary-total">
+                <span>Total</span><span>${{ totales.total }} MXN</span>
+            </div>
+
+            <a href="{% url 'carrito' %}" class="account-switch">← Volver al carrito</a>
+        </aside>
+
+    </div>
+
+</section>
+
+{% endblock %}

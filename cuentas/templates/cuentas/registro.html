@@ -1,0 +1,85 @@
+{% extends "tienda/base.html" %}
+
+{% block title %}Crear cuenta | Perfumundo{% endblock %}
+
+{% block content %}
+
+<section class="account-page">
+
+    <div class="section-heading">
+        <p>PERFUMUNDO</p>
+        <h2>Crear cuenta</h2>
+    </div>
+
+    <form method="POST" class="account-form" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+
+        <fieldset class="customer-type">
+            <legend>{{ form.tipo.label }}</legend>
+            {% for opcion in form.tipo %}
+                <label class="customer-type-option">
+                    {{ opcion.tag }}
+                    <span>
+                        <strong>{{ opcion.choice_label }}</strong>
+                        {% if opcion.data.value == 'mayorista' %}
+                            <small>Para negocios que compran por volumen. Revisamos cada solicitud.</small>
+                        {% else %}
+                            <small>Compra en línea y da seguimiento a tus pedidos.</small>
+                        {% endif %}
+                    </span>
+                </label>
+            {% endfor %}
+            {{ form.tipo.errors }}
+        </fieldset>
+
+        <div class="form-row">
+            <div class="field">{{ form.first_name.as_field_group }}</div>
+            <div class="field">{{ form.last_name.as_field_group }}</div>
+        </div>
+
+        <div class="field">{{ form.email.as_field_group }}</div>
+        <div class="field">{{ form.telefono.as_field_group }}</div>
+
+        <div class="wholesale-fields" id="campos-mayorista">
+            <div class="field">{{ form.empresa.as_field_group }}</div>
+            <div class="field">{{ form.rfc.as_field_group }}</div>
+        </div>
+
+        <div class="field">{{ form.password1.as_field_group }}</div>
+        <div class="field">{{ form.password2.as_field_group }}</div>
+
+        <button type="submit" class="add-cart-button">Crear cuenta</button>
+
+        <p class="account-switch">
+            ¿Ya tienes cuenta?
+            <a href="{% url 'entrar' %}">Entra aquí</a>
+        </p>
+    </form>
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Muestra los campos de empresa y RFC solo para clientes mayoristas.
+    (function () {
+        const campos = document.getElementById('campos-mayorista');
+        const opciones = document.querySelectorAll('input[name="tipo"]');
+
+        function actualizar() {
+            const elegido = document.querySelector('input[name="tipo"]:checked');
+            campos.hidden = !(elegido && elegido.value === 'mayorista');
+        }
+
+        opciones.forEach(function (op) { op.addEventListener('change', actualizar); });
+        actualizar();
+    })();
+</script>
+{% endblock %}

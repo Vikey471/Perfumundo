@@ -1,0 +1,32 @@
+{% load static %}
+{% comment %}
+    Carrusel de banners de la portada. Los banners se suben en el admin
+    (Tienda › Banners de la portada). Cambia solo cada 5 s con difuminado.
+{% endcomment %}
+{% if banners %}
+    <div class="banner-carousel" data-carousel data-intervalo="5000"
+         aria-roledescription="carrusel" aria-label="Promociones destacadas">
+
+        {% for banner in banners %}
+            <figure class="banner-slide{% if forloop.first %} is-active{% endif %}"
+                    {% if not forloop.first %}aria-hidden="true"{% endif %}>
+
+                {% if banner.url_destino %}<a href="{{ banner.url_destino }}" class="banner-link"
+                    {% if not forloop.first %}tabindex="-1"{% endif %}>{% endif %}
+
+                    <img src="{{ banner.imagen.url }}" alt="{{ banner.titulo }}"
+                         {% if not forloop.first %}loading="lazy"{% endif %}>
+
+                    <figcaption class="banner-caption">{{ banner.titulo }}</figcaption>
+
+                {% if banner.url_destino %}</a>{% endif %}
+            </figure>
+        {% endfor %}
+
+    </div>
+{% else %}
+    {# Sin banners cargados: se muestra el logo #}
+    <div class="banner-empty">
+        <img src="{% static 'tienda/img/logo-simbolo.svg' %}" alt="Perfumundo">
+    </div>
+{% endif %}
