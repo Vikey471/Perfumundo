@@ -2338,10 +2338,14 @@ footer p {
 
 .hero-signature {
     font-family: 'Great Vibes', 'Brush Script MT', cursive;
+    display: inline-block;
     font-size: 26px;
     letter-spacing: 0.5px;
-    line-height: 1.1;
-    margin-bottom: 16px;
+    /* La letra cursiva tiene trazos altos: más alto de línea y un poco de
+       relleno para que el degradado no recorte la parte de arriba. */
+    line-height: 1.6;
+    padding: 0.15em 0.2em 0.05em 0;
+    margin-bottom: 10px;
     opacity: 0.9;
     background: linear-gradient(90deg, #f0d77a 0%, #d4af37 55%, #a8862a 100%);
     -webkit-background-clip: text;
