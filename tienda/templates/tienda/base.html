@@ -8,6 +8,9 @@
 
     <title>{% block title %}Perfumundo | Sé original{% endblock %}</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap">
     <link rel="stylesheet" href="{% static 'tienda/css/estilos.css' %}?v={{ version_estaticos }}">
     <script src="{% static 'tienda/js/animaciones.js' %}?v={{ version_estaticos }}" defer></script>
 
@@ -95,6 +98,8 @@
         <p>
             Sé original.
         </p>
+
+        <p class="footer-signature">Perfumando desde 2023</p>
 
         <p class="footer-address">
             <a href="{{ negocio.maps_url }}" target="_blank" rel="noopener noreferrer">{{ negocio.direccion }}</a>
